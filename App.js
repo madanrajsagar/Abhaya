@@ -4,6 +4,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { ReportProvider } from './context/ReportContext';
+import { SilentSOSProvider } from './context/SilentSOSContext';
 
 import LoginScreen from './screens/LoginScreen';
 import SignUpScreen from './screens/SignUpScreen';
@@ -65,11 +66,13 @@ export default function App() {
   return (
     <AuthProvider>
       <ReportProvider>
-        <NavigationContainer>
-          <AppNavigator />
-        </NavigationContainer>
-      </ReportProvider>
-    </AuthProvider>
+        <SilentSOSProvider>
+         <NavigationContainer>
+            <AppNavigator />
+         </NavigationContainer>
+       </SilentSOSProvider>
+     </ReportProvider>
+   </AuthProvider>
   );
 }
 
