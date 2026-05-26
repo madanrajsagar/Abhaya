@@ -1,4 +1,4 @@
-import React, { useCallback, useState, useEffect } from 'react';
+import React, { useCallback, useState, useEffect, useContext } from 'react';
 import {
   ActivityIndicator,
   Alert,
@@ -16,6 +16,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import * as Location from 'expo-location';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useAuth } from '../context/AuthContext';
+import { SilentSOSContext } from '../context/SilentSOSContext';
 import notificationsAPI from '../services/notifications';
 import { getLatestIncidentReport } from '../services/reportStorage';
 import { calculateRiskPercentage, getSafetyRecommendations } from '../services/riskAssessment';
@@ -95,6 +96,7 @@ const formatActivityTime = (value) => {
 
 export default function HomeScreen({ navigation }) {
   const { user } = useAuth();
+  const { triggerSilentSOS } = useContext(SilentSOSContext);
   const displayName = user?.displayName || user?.name || 'Priya';
   const avatarLetter = displayName.trim().charAt(0).toUpperCase() || 'P';
   const [recentActivity, setRecentActivity] = useState([]);
@@ -280,25 +282,34 @@ export default function HomeScreen({ navigation }) {
   }, [navigation]);
 
   const handleSosPress = useCallback(() => {
-    const nextCount = sosTapCount + 1;
+  const nextCount = sosTapCount + 1;
 
-    if (sosTapResetTimerRef.current) {
-      clearTimeout(sosTapResetTimerRef.current);
-      sosTapResetTimerRef.current = null;
+  if (sosTapResetTimerRef.current) {
+    clearTimeout(sosTapResetTimerRef.current);
+    sosTapResetTimerRef.current = null;
+  }
+
+  if (nextCount >= HOME_SOS_TAP_REQUIRED) {
+    setSosTapCount(0);
+
+    // Existing emergency flow
+    launchHomeSosFlow();
+
+    //  NEW: Silent SOS background trigger
+    if (triggerSilentSOS) {
+      triggerSilentSOS();
     }
 
-    if (nextCount >= HOME_SOS_TAP_REQUIRED) {
-      setSosTapCount(0);
-      launchHomeSosFlow();
-      return;
-    }
+    return;
+  }
 
-    setSosTapCount(nextCount);
-    sosTapResetTimerRef.current = setTimeout(() => {
-      setSosTapCount(0);
-      sosTapResetTimerRef.current = null;
-    }, HOME_SOS_TAP_WINDOW_MS);
-  }, [launchHomeSosFlow, sosTapCount]);
+  setSosTapCount(nextCount);
+
+  sosTapResetTimerRef.current = setTimeout(() => {
+    setSosTapCount(0);
+    sosTapResetTimerRef.current = null;
+  }, HOME_SOS_TAP_WINDOW_MS);
+}, [launchHomeSosFlow, sosTapCount, triggerSilentSOS]);
 
   const openReportsSection = useCallback(async () => {
     try {

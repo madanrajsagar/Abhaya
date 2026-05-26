@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState, useCallback, useContext } from 'react';
 import {
   View,
   Text,
@@ -15,6 +15,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { useFocusEffect } from '@react-navigation/native';
 import { useAuth } from '../context/AuthContext';
+import { SilentSOSContext } from '../context/SilentSOSContext';
 import authAPI from '../services/api';
 import {
   DEFAULT_SECURITY_PASSWORD,
@@ -35,6 +36,7 @@ import {
 
 export default function SettingsScreen({ navigation }) {
   const { logout, refreshProfile, user } = useAuth();
+  const { silentModeEnabled, updateSilentMode } = useContext(SilentSOSContext);
   const [profileModalVisible, setProfileModalVisible] = useState(false);
   const [displayNameInput, setDisplayNameInput] = useState('');
   const [isSavingProfile, setIsSavingProfile] = useState(false);
@@ -292,6 +294,21 @@ export default function SettingsScreen({ navigation }) {
           {renderItem('moon-outline', '#8c63db', 'Dark Mode', null, (
             <Switch value={false} trackColor={{ true: '#8c63db', false: '#e0e0e0' }} />
           ))}
+          <View style={styles.divider} />
+
+           {renderItem(
+           'shield-checkmark-outline',
+           '#8c63db',
+           'Silent SOS Mode',
+           'Send SOS alerts discreetly without vibration or popup alerts',
+          (
+           <Switch
+           value={silentModeEnabled}
+           trackColor={{ true: '#8c63db', false: '#e0e0e0' }}
+           onValueChange={updateSilentMode}
+           />
+           )
+           )}
         </View>
 
         <Text style={styles.sectionHeading}>Journey Settings</Text>
