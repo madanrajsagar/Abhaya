@@ -4,9 +4,35 @@ const path = require('path');
 const logsDir = path.join(__dirname, '..', 'logs');
 const logFilePath = path.join(logsDir, 'backend.log');
 
+const MAX_LOG_BYTES = Number(process.env.MAX_LOG_BYTES || 10 * 1024 * 1024);
+const MAX_ROTATED_FILES = Number(process.env.MAX_ROTATED_FILES || 3);
+
 fs.mkdirSync(logsDir, { recursive: true });
 
-const logStream = fs.createWriteStream(logFilePath, { flags: 'a' });
+let logStream = fs.createWriteStream(logFilePath, { flags: 'a' });
+
+const rotateIfNeeded = () => {
+  try {
+    const stats = fs.statSync(logFilePath);
+    if (stats.size < MAX_LOG_BYTES) return;
+
+    logStream.end();
+
+    const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+    const rotatedPath = path.join(logsDir, `backend-${timestamp}.log`);
+    fs.renameSync(logFilePath, rotatedPath);
+
+    const rotatedFiles = fs.readdirSync(logsDir)
+      .filter((f) => f.startsWith('backend-') && f.endsWith('.log'))
+      .sort();
+
+    while (rotatedFiles.length > MAX_ROTATED_FILES) {
+      fs.unlinkSync(path.join(logsDir, rotatedFiles.shift()));
+    }
+
+    logStream = fs.createWriteStream(logFilePath, { flags: 'a' });
+  } catch {}
+};
 
 const redactValue = (key, value) => {
   if (value === undefined || value === null) {
@@ -45,6 +71,7 @@ const formatLine = (level, message, details = {}) => {
 };
 
 const writeLine = (level, message, details = {}) => {
+  rotateIfNeeded();
   const line = formatLine(level, message, details);
   logStream.write(`${line}\n`);
 
