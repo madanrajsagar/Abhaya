@@ -34,11 +34,22 @@ const writeDb = (db) => {
   fs.renameSync(tmpPath, DB_PATH);
 };
 
+const isValidIncidentId = (id) =>
+  typeof id === 'string' && id.length > 0 && id.length <= 64;
+
 const findIncident = (db, incidentId) =>
   db.incidents.find((i) => i.incidentId === incidentId) || null;
 
 // All incident routes require auth
 router.use(verifyToken);
+
+// Validate incidentId parameter format
+router.param('incidentId', (req, res, next, id) => {
+  if (!isValidIncidentId(id)) {
+    return res.status(400).json({ success: false, error: 'Invalid incidentId format.' });
+  }
+  next();
+});
 
 /**
  * POST /api/incidents/mock

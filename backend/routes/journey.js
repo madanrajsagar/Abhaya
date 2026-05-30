@@ -22,6 +22,7 @@ const ROUTE_RADIUS_ATTEMPTS_METRES = [null, 1000, 2500, 5000];
 const FAST_ROUTE_RADIUS_ATTEMPTS_METRES = [null, 1000];
 const recentRouteCache = new Map();
 const recentGeocodeCache = new Map();
+const MAX_CACHE_SIZE = 500;
 
 const createTimeoutError = () => {
   const error = new Error('Journey provider request timed out.');
@@ -164,6 +165,10 @@ const getCachedRoute = (cacheKey) => {
 };
 
 const setCachedRoute = (cacheKey, data) => {
+  if (recentRouteCache.size >= MAX_CACHE_SIZE) {
+    const firstKey = recentRouteCache.keys().next().value;
+    recentRouteCache.delete(firstKey);
+  }
   recentRouteCache.set(cacheKey, {
     data,
     cachedAt: Date.now(),
@@ -187,6 +192,10 @@ const getCachedGeocode = (cacheKey) => {
 };
 
 const setCachedGeocode = (cacheKey, data) => {
+  if (recentGeocodeCache.size >= MAX_CACHE_SIZE) {
+    const firstKey = recentGeocodeCache.keys().next().value;
+    recentGeocodeCache.delete(firstKey);
+  }
   recentGeocodeCache.set(cacheKey, {
     data,
     cachedAt: Date.now(),
