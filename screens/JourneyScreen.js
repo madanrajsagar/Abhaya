@@ -18,7 +18,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { useFocusEffect } from '@react-navigation/native';
 import MapView, { Circle, Marker, Polyline } from 'react-native-maps';
-import { Camera } from 'expo-camera';
+import { CameraView } from 'expo-camera';
 import * as Location from 'expo-location';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useAuth } from '../context/AuthContext';
@@ -601,8 +601,8 @@ export default function JourneyScreen({ navigation, route: screenRoute }) {
   const prewarmEmergencyEvidencePermissions = useCallback(async () => {
     try {
       await Promise.allSettled([
-        Camera.requestCameraPermissionsAsync(),
-        Camera.requestMicrophonePermissionsAsync(),
+        CameraView.requestCameraPermissionsAsync(),
+        CameraView.requestMicrophonePermissionsAsync(),
       ]);
     } catch {
       // Permission pre-warm is best-effort and should never block the journey flow.
