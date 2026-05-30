@@ -16,7 +16,8 @@ export function ReportProvider({ children }) {
         if (raw) {
           setLatestReportState(JSON.parse(raw));
         }
-      } catch {
+      } catch (e) {
+        console.warn('Failed to hydrate report from storage:', e);
         setLatestReportState(null);
       } finally {
         setHydrated(true);
@@ -34,7 +35,9 @@ export function ReportProvider({ children }) {
       } else {
         await AsyncStorage.removeItem(STORAGE_KEY);
       }
-    } catch {}
+    } catch (e) {
+      console.warn('Failed to persist report to storage:', e);
+    }
   }, []);
 
   const clearLatestReport = useCallback(async () => {
