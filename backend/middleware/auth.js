@@ -26,6 +26,7 @@ const verifyToken = async (req, res, next) => {
         uid: decodedToken.uid,
         email: decodedToken.email,
         displayName: decodedToken.name || '',
+        idToken,
       };
     } else {
       const apiKey = getEnvValue('FIREBASE_API_KEY');
@@ -62,6 +63,7 @@ const verifyToken = async (req, res, next) => {
         uid: userInfo.localId,
         email: userInfo.email,
         displayName: userInfo.displayName || '',
+        idToken,
       };
     }
 

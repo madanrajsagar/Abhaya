@@ -572,13 +572,12 @@ router.get('/profile', verifyToken, async (req, res) => {
     });
     if (!apiKey) return;
 
-    const idToken = req.headers.authorization.split('Bearer ')[1];
     const { data } = await firebaseJson(
       `${IDENTITY_URL}:lookup?key=${apiKey}`,
       {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ idToken }),
+        body: JSON.stringify({ idToken: req.user.idToken }),
       },
       'profileLookup'
     );
@@ -676,8 +675,7 @@ router.put('/profile', verifyToken, async (req, res) => {
     });
     if (!apiKey) return;
 
-    const idToken = req.headers.authorization.split('Bearer ')[1];
-    const updateData = { idToken, returnSecureToken: false };
+    const updateData = { idToken: req.user.idToken, returnSecureToken: false };
     if (displayName !== undefined) updateData.displayName = displayName;
     if (photoURL !== undefined) updateData.photoUrl = photoURL;
 
@@ -743,13 +741,12 @@ router.delete('/account', verifyToken, async (req, res) => {
     });
     if (!apiKey) return;
 
-    const idToken = req.headers.authorization.split('Bearer ')[1];
     const { data } = await firebaseJson(
       `${IDENTITY_URL}:delete?key=${apiKey}`,
       {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ idToken }),
+        body: JSON.stringify({ idToken: req.user.idToken }),
       },
       'accountDelete'
     );
