@@ -56,6 +56,7 @@ export default function VideoEvidenceScreen({ navigation, route }) {
   const [incidentId, setIncidentId] = useState(initialIncidentId);
   const [loading, setLoading] = useState(true);
   const [videos, setVideos] = useState([]);
+  const hasEvidence = videos.length > 0;
   const [error, setError] = useState('');
 
   const [playerVisible, setPlayerVisible] = useState(false);

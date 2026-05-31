@@ -36,6 +36,31 @@ const formatResolvedAddress = (result) => {
     return '';
   }
 
+  // SEVERITY 
+  const calculateSeverity = ({ hasVideo, hour, locationAvailable }) => {
+    let score = 0;
+
+    // 🎥 Evidence (MOST IMPORTANT)
+    if (hasVideo) score += 0.5;
+
+    // 🌙 Night time = more risky
+    if (hour >= 20 || hour <= 5) score += 0.3;
+
+    // 📍 No location = suspicious
+    if (!locationAvailable) score += 0.2;
+
+    // Clamp to 1
+    if (score > 1) score = 1;
+
+    return score;
+  };
+
+  const getSeverityLevel = (score) => {
+    if (score >= 0.7) return 'HIGH';
+    if (score >= 0.4) return 'MEDIUM';
+    return 'LOW';
+  };
+
   const primary = [result.name, result.street].filter(Boolean).join(', ');
   const secondary = [
     result.district,
@@ -130,8 +155,8 @@ const mergeIncidentReportSeed = ({
     vehicle:
       seed?.vehicle || seed?.vehicleDetails
         ? {
-            ...(seed?.vehicle || seed?.vehicleDetails || {}),
-          }
+          ...(seed?.vehicle || seed?.vehicleDetails || {}),
+        }
         : null,
     journey: seed?.journey ? { ...seed.journey } : null,
     zone: seed?.zone ? { ...seed.zone } : null,
@@ -177,8 +202,8 @@ export default function IncidentReportScreen({ navigation, route }) {
   const closeRecorder = () => {
     try {
       cameraRef.current?.stopRecording?.();
-    } catch {}
-    AudioAnalysisService.stopAnalysis().catch(() => {});
+    } catch { }
+    AudioAnalysisService.stopAnalysis().catch(() => { });
     setRecorderVisible(false);
     setPhase('idle');
   };
@@ -279,11 +304,11 @@ export default function IncidentReportScreen({ navigation, route }) {
         };
         setCurrentReport({ ...(reportRef.current || {}) });
       })
-      .catch(() => {});
+      .catch(() => { });
   };
 
   useEffect(() => {
-    AudioAnalysisService.stopAnalysis().catch(() => {});
+    AudioAnalysisService.stopAnalysis().catch(() => { });
   }, []);
 
   useEffect(() => {
@@ -320,7 +345,7 @@ export default function IncidentReportScreen({ navigation, route }) {
         const stopTimer = setTimeout(() => {
           try {
             camera.stopRecording?.();
-          } catch {}
+          } catch { }
         }, RECORD_SECONDS * 1000);
 
         const recordPromise = camera.recordAsync({
@@ -373,15 +398,45 @@ export default function IncidentReportScreen({ navigation, route }) {
 
         const emailRecipients = await getEmergencyEmailAddresses();
         const journeySettings = await getJourneySettings();
-        const emailResult = await incidentAPI.sendEmergencyEmail(updatedReport, emailRecipients, {
-          smsEnabled: journeySettings?.smsAlertsEnabled !== false,
-          callEnabled: journeySettings?.callAlertsEnabled !== false,
+        const emailResult = await incidentAPI.sendEmergencyEmail(
+          updatedReport,
+          emailRecipients,
+          {
+            smsEnabled: journeySettings?.smsAlertsEnabled !== false,
+            callEnabled: journeySettings?.callAlertsEnabled !== false,
+            isHighPriority: severityLevel === 'HIGH', // ⭐ ADD THIS
+          }
+        );
+        // 🧠 Compute severity
+        const hasVideo = updatedReport.evidence?.some(
+          (e) => e.type === 'video' && e.url
+        );
+
+        const hour = new Date().getHours();
+
+        const locationAvailable =
+          Number.isFinite(updatedReport?.location?.lat) &&
+          Number.isFinite(updatedReport?.location?.lng);
+
+        const severityScore = calculateSeverity({
+          hasVideo,
+          hour,
+          locationAvailable,
         });
+
+        const severityLevel = getSeverityLevel(severityScore);
+
+        // 🚨 Final report with severity
         const finalReport = {
           ...updatedReport,
+          severity: {
+            score: severityScore,
+            level: severityLevel,
+          },
           notification: {
             sent: Boolean(emailResult?.success),
             channels: emailResult?.channels || null,
+            priority: severityLevel === 'HIGH', // ⭐ IMPORTANT
           },
         };
 
@@ -462,7 +517,7 @@ export default function IncidentReportScreen({ navigation, route }) {
   return (
     <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
       <StatusBar barStyle="dark-content" backgroundColor="#fbf9ff" />
-      
+
       {/* Header */}
       <View style={styles.header}>
         <TouchableOpacity
@@ -477,122 +532,130 @@ export default function IncidentReportScreen({ navigation, route }) {
 
       {!shouldHideReportContent ? (
         <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
-        <View style={styles.reportCard}>
-          {/* Title Section */}
-          <View style={styles.sectionHeader}>
-            <View style={styles.iconCircleRed}>
-              <Ionicons name="clipboard" size={18} color="#fff" />
+          <View style={styles.reportCard}>
+            {/* Title Section */}
+            <View style={styles.sectionHeader}>
+              <View style={styles.iconCircleRed}>
+                <Ionicons name="clipboard" size={18} color="#fff" />
+              </View>
+              <View>
+                <Text style={styles.reportTitle}>ABHAYA INCIDENT REPORT</Text>
+                <Text style={styles.reportDate}>{reportDateText}</Text>
+              </View>
             </View>
-            <View>
-              <Text style={styles.reportTitle}>ABHAYA INCIDENT REPORT</Text>
-              <Text style={styles.reportDate}>{reportDateText}</Text>
+
+            <View style={styles.divider} />
+
+            {/* User Info */}
+            <View style={styles.section}>
+              <View style={styles.sectionTitleRow}>
+                <Ionicons name="person" size={16} color="#4da6ff" />
+                <Text style={styles.sectionTitle}>User Information</Text>
+              </View>
+              <Text style={styles.dataPrimary}>{currentUserName}</Text>
+              <Text style={styles.dataSecondary}>Mobile: {currentUserPhone}</Text>
+              {currentReport?.user?.email ? (
+                <Text style={styles.dataSecondary}>Email: {currentReport.user.email}</Text>
+              ) : null}
             </View>
-          </View>
 
-          <View style={styles.divider} />
+            <View style={styles.dividerLight} />
 
-          {/* User Info */}
-          <View style={styles.section}>
-            <View style={styles.sectionTitleRow}>
-              <Ionicons name="person" size={16} color="#4da6ff" />
-              <Text style={styles.sectionTitle}>User Information</Text>
-            </View>
-            <Text style={styles.dataPrimary}>{currentUserName}</Text>
-            <Text style={styles.dataSecondary}>Mobile: {currentUserPhone}</Text>
-            {currentReport?.user?.email ? (
-              <Text style={styles.dataSecondary}>Email: {currentReport.user.email}</Text>
-            ) : null}
-          </View>
-
-          <View style={styles.dividerLight} />
-
-          {/* Vehicle Info */}
-          <View style={styles.section}>
-            <View style={styles.sectionTitleRow}>
-              <Ionicons name="car" size={16} color="#ed5565" />
-              <Text style={styles.sectionTitle}>Vehicle Details</Text>
-            </View>
-            <Text style={styles.dataPrimary}>
-              {currentVehicle?.plateNumber || vehicleSummary || 'No linked vehicle scan'}
-            </Text>
-            {vehicleSummary ? (
-              <Text style={styles.dataSecondary}>Vehicle: {vehicleSummary}</Text>
-            ) : null}
-            <Text style={styles.dataSecondary}>License: Valid ✅</Text>
-          </View>
-
-          <View style={styles.dividerLight} />
-
-          {/* Location */}
-          <View style={styles.section}>
-            <View style={styles.sectionTitleRow}>
-              <Ionicons name="location" size={16} color="#ed5565" />
-              <Text style={styles.sectionTitle}>Last Known Location</Text>
-            </View>
-            <Text style={styles.dataPrimary}>{locationSummary}</Text>
-            <TouchableOpacity style={styles.mapLink}>
-              <Ionicons name="map" size={14} color="#7b57d1" />
-              <Text style={styles.mapLinkText}>
-                {currentReport?.location?.address || 'View on Map'}
+            {/* Vehicle Info */}
+            <View style={styles.section}>
+              <View style={styles.sectionTitleRow}>
+                <Ionicons name="car" size={16} color="#ed5565" />
+                <Text style={styles.sectionTitle}>Vehicle Details</Text>
+              </View>
+              <Text style={styles.dataPrimary}>
+                {currentVehicle?.plateNumber || vehicleSummary || 'No linked vehicle scan'}
               </Text>
-            </TouchableOpacity>
-          </View>
-
-          <View style={styles.dividerLight} />
-
-          {/* Evidence */}
-          <View style={styles.section}>
-            <View style={styles.sectionTitleRow}>
-              <Ionicons name="folder" size={16} color="#f8d664" />
-              <Text style={styles.sectionTitle}>Evidence Files</Text>
+              {vehicleSummary ? (
+                <Text style={styles.dataSecondary}>Vehicle: {vehicleSummary}</Text>
+              ) : null}
+              <Text style={styles.dataSecondary}>License: Valid ✅</Text>
             </View>
-            
-            <TouchableOpacity
-              style={styles.evidenceFile}
-              activeOpacity={0.85}
-              onPress={() => navigation.navigate('VideoEvidence', { incidentId, showAll: true })}
-            >
-              <View style={styles.evidenceIconWrap}>
-                <Ionicons name="eye" size={14} color="#7b57d1" />
+
+            <View style={styles.dividerLight} />
+
+            {/* Location */}
+            <View style={styles.section}>
+              <View style={styles.sectionTitleRow}>
+                <Ionicons name="location" size={16} color="#ed5565" />
+                <Text style={styles.sectionTitle}>Last Known Location</Text>
               </View>
-              <Text style={styles.evidenceName}>Video Evidence</Text>
-              <Text style={styles.evidenceMeta}>{videoEvidenceAvailable ? 'View' : 'Pending'}</Text>
-            </TouchableOpacity>
+              <Text style={styles.dataPrimary}>{locationSummary}</Text>
+              <TouchableOpacity style={styles.mapLink}>
+                <Ionicons name="map" size={14} color="#7b57d1" />
+                <Text style={styles.mapLinkText}>
+                  {currentReport?.location?.address || 'View on Map'}
+                </Text>
+              </TouchableOpacity>
+            </View>
 
-            <View style={styles.evidenceFile}>
-              <View style={styles.evidenceIconWrap}>
-                <Ionicons name="map-outline" size={14} color="#7b57d1" />
+            <View style={styles.dividerLight} />
+
+            {/* Evidence */}
+            <View style={styles.section}>
+              <View style={styles.sectionTitleRow}>
+                <Ionicons name="folder" size={16} color="#f8d664" />
+                <Text style={styles.sectionTitle}>Evidence Files</Text>
               </View>
-              <Text style={styles.evidenceName}>Route Timeline</Text>
-              <Text style={styles.evidenceMeta}>View</Text>
+
+              <TouchableOpacity
+                style={styles.evidenceFile}
+                activeOpacity={0.85}
+                onPress={() => navigation.navigate('VideoEvidence', { incidentId, showAll: true })}
+              >
+                <View style={styles.evidenceIconWrap}>
+                  <Ionicons name="eye" size={14} color="#7b57d1" />
+                </View>
+                <Text style={styles.evidenceName}>Video Evidence</Text>
+                <Text style={styles.evidenceMeta}>{videoEvidenceAvailable ? 'View' : 'Pending'}</Text>
+              </TouchableOpacity>
+
+              <View style={styles.evidenceFile}>
+                <View style={styles.evidenceIconWrap}>
+                  <Ionicons name="map-outline" size={14} color="#7b57d1" />
+                </View>
+                <Text style={styles.evidenceName}>Route Timeline</Text>
+                <Text style={styles.evidenceMeta}>View</Text>
+              </View>
+            </View>
+
+            <Text style={{ fontWeight: 'bold', marginTop: 10 }}>
+              Severity: {currentReport?.severity?.level || 'N/A'}
+            </Text>
+
+            <Text>
+              Score: {currentReport?.severity?.score?.toFixed(2) || '0'}
+            </Text>
+
+            {/* Risk Score */}
+            <View style={styles.riskBadge}>
+              <Text style={styles.riskBadgeText}>Risk Score</Text>
+              <View style={styles.riskBadgeValueWrap}>
+                <Text style={styles.riskBadgeValue}>{riskScore}</Text>
+                <View style={styles.riskDot} />
+              </View>
             </View>
           </View>
 
-          {/* Risk Score */}
-          <View style={styles.riskBadge}>
-            <Text style={styles.riskBadgeText}>Risk Score</Text>
-            <View style={styles.riskBadgeValueWrap}>
-              <Text style={styles.riskBadgeValue}>{riskScore}</Text>
-              <View style={styles.riskDot} />
-            </View>
-          </View>
-        </View>
+          {/* Action Buttons */}
+          <TouchableOpacity style={[styles.actionBtn, styles.btnRed]}>
+            <Ionicons name="share-social" size={18} color="#fff" />
+            <Text style={styles.btnText}>Share with Police</Text>
+          </TouchableOpacity>
 
-        {/* Action Buttons */}
-        <TouchableOpacity style={[styles.actionBtn, styles.btnRed]}>
-          <Ionicons name="share-social" size={18} color="#fff" />
-          <Text style={styles.btnText}>Share with Police</Text>
-        </TouchableOpacity>
+          <TouchableOpacity style={[styles.actionBtn, styles.btnGreen]}>
+            <Ionicons name="checkmark" size={18} color="#fff" />
+            <Text style={styles.btnText}>Saved to Cloud ✅</Text>
+          </TouchableOpacity>
 
-        <TouchableOpacity style={[styles.actionBtn, styles.btnGreen]}>
-          <Ionicons name="checkmark" size={18} color="#fff" />
-          <Text style={styles.btnText}>Saved to Cloud ✅</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity style={[styles.actionBtn, styles.btnPurple]}>
-          <Ionicons name="download-outline" size={18} color="#fff" />
-          <Text style={styles.btnText}>Download Report</Text>
-        </TouchableOpacity>
+          <TouchableOpacity style={[styles.actionBtn, styles.btnPurple]}>
+            <Ionicons name="download-outline" size={18} color="#fff" />
+            <Text style={styles.btnText}>Download Report</Text>
+          </TouchableOpacity>
         </ScrollView>
       ) : (
         <View style={styles.recorderScreenPlaceholder} />
@@ -657,36 +720,36 @@ const styles = StyleSheet.create({
   headerTitle: { fontSize: 20, fontWeight: '800', color: '#111' },
   content: { paddingHorizontal: 20, paddingBottom: 40 },
   recorderScreenPlaceholder: { flex: 1 },
-  
+
   reportCard: { backgroundColor: '#fff', borderRadius: 24, padding: 24, shadowColor: '#14092c', shadowOffset: { width: 0, height: 8 }, shadowOpacity: 0.05, shadowRadius: 20, elevation: 4, marginBottom: 24, marginTop: 8 },
   sectionHeader: { flexDirection: 'row', alignItems: 'center', gap: 16 },
   iconCircleRed: { width: 40, height: 40, borderRadius: 20, backgroundColor: '#ea4335', justifyContent: 'center', alignItems: 'center' },
   reportTitle: { fontSize: 15, fontWeight: '800', color: '#111' },
   reportDate: { fontSize: 12, color: '#8f8f96', marginTop: 2 },
-  
+
   divider: { height: 1, backgroundColor: '#eee', marginVertical: 20 },
   dividerLight: { height: 1, backgroundColor: '#f5f5f5', marginVertical: 16 },
-  
+
   section: {},
   sectionTitleRow: { flexDirection: 'row', alignItems: 'center', gap: 8, marginBottom: 8 },
   sectionTitle: { fontSize: 13, color: '#8f8f96', fontWeight: '500' },
   dataPrimary: { fontSize: 15, fontWeight: '700', color: '#111', marginBottom: 4 },
   dataSecondary: { fontSize: 13, color: '#666', marginBottom: 2 },
-  
+
   mapLink: { flexDirection: 'row', alignItems: 'center', gap: 6, marginTop: 6 },
   mapLinkText: { fontSize: 13, color: '#7b57d1', fontWeight: '700' },
-  
+
   evidenceFile: { flexDirection: 'row', alignItems: 'center', backgroundColor: '#f7f4fb', padding: 14, borderRadius: 16, marginBottom: 10 },
   evidenceIconWrap: { width: 28, height: 28, borderRadius: 14, backgroundColor: '#eaddff', justifyContent: 'center', alignItems: 'center', marginRight: 12 },
   evidenceName: { flex: 1, fontSize: 13, fontWeight: '600', color: '#111' },
   evidenceMeta: { fontSize: 12, color: '#8f8f96' },
-  
+
   riskBadge: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', backgroundColor: '#ffeaea', paddingHorizontal: 16, paddingVertical: 12, borderRadius: 16, marginTop: 10 },
   riskBadgeText: { fontSize: 13, color: '#666' },
   riskBadgeValueWrap: { flexDirection: 'row', alignItems: 'center', gap: 6 },
   riskBadgeValue: { fontSize: 14, fontWeight: '800', color: '#ea4335' },
   riskDot: { width: 10, height: 10, borderRadius: 5, backgroundColor: '#ea4335' },
-  
+
   actionBtn: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 8, paddingVertical: 18, borderRadius: 16, marginBottom: 12 },
   btnText: { color: '#fff', fontSize: 15, fontWeight: '700' },
   btnRed: { backgroundColor: '#ea5455' },
