@@ -19,7 +19,7 @@ import { useAuth } from '../context/AuthContext';
 import notificationsAPI from '../services/notifications';
 import { getLatestIncidentReport } from '../services/reportStorage';
 import { calculateRiskPercentage, getSafetyRecommendations } from '../services/riskAssessment';
-
+import { calculateSeverity, getSeverityLevel } from '../services/severityService';
 const { width } = Dimensions.get('window');
 const HOME_SOS_TAP_REQUIRED = 3;
 const HOME_SOS_TAP_WINDOW_MS = 2000;
@@ -127,10 +127,10 @@ export default function HomeScreen({ navigation }) {
       const journeyJSON = await AsyncStorage.getItem('@abhaya_active_journey');
       if (journeyJSON) {
         const journey = JSON.parse(journeyJSON);
-        
+
         // Journey is active if it has a route with points
         const isActive = Array.isArray(journey.route) && journey.route.length > 0;
-        
+
         // Prepare the journey data with proper structure for risk calculation
         const journeyData = {
           isActive,
@@ -140,7 +140,7 @@ export default function HomeScreen({ navigation }) {
           eta: journey.eta,
           distanceKm: journey.distanceKm,
         };
-        
+
         setJourneyData(journeyData);
       } else {
         setJourneyData(null);
@@ -267,17 +267,43 @@ export default function HomeScreen({ navigation }) {
   }, []);
 
   const launchHomeSosFlow = useCallback(() => {
-    Alert.alert('SOS Activated', 'Emergency detected. Recording started.', [
+
+    // 🔹 Temporary inputs (can improve later)
+    const message = "help emergency"; // later from user input
+    const hasEvidence = false; // later from VideoEvidenceScreen
+
+    const score = calculateSeverity({
+      message,
+      riskData,
+      hasEvidence
+    });
+
+    const level = getSeverityLevel(score);
+
+    console.log("Severity Score:", score);
+    console.log("Severity Level:", level);
+
+    // 🚨 HIGH PRIORITY CASE
+    if (level === "HIGH") {
+      Alert.alert(
+        "🚨 HIGH RISK EMERGENCY",
+        "High severity detected. Alerting all emergency contacts immediately."
+      );
+    }
+
+    Alert.alert('SOS Activated', `Severity: ${level}`, [
       {
         text: 'OK',
         onPress: () =>
           navigation.navigate('IncidentReport', {
             autoStartEvidence: true,
             triggerType: 'SOS',
-          }),
+            hasEvidence: false, // default (will update later)
+          })
       },
     ]);
-  }, [navigation]);
+
+  }, [navigation, riskData]);
 
   const handleSosPress = useCallback(() => {
     const nextCount = sosTapCount + 1;

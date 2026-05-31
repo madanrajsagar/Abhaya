@@ -255,7 +255,7 @@ class AudioAnalysisService {
     if (typeof listener !== 'function') {
       return () => {};
     }
-
+    
     this.statusListeners.add(listener);
     listener(this.getStatusSnapshot());
 
