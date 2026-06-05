@@ -42,11 +42,11 @@ The project contains both:
 - Evidence video viewing inside the app
 
 ### Incident Report
+<!-- Improved consistency in feature descriptions -->
 
-- Automatic incident report generation
-- Report details screen
-- Evidence URL attached with report
-- Report storage and retrieval support
+- Report Details Screen
+- Evidence URL Attached with Report
+- Report Storage and Retrieval Support
 
 ### Location and Map Support
 
