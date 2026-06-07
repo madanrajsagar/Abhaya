@@ -34,7 +34,9 @@ export function ReportProvider({ children }) {
       } else {
         await AsyncStorage.removeItem(STORAGE_KEY);
       }
-    } catch {}
+    } catch (e) {
+      console.warn('Failed to persist latest report:', e?.message);
+    }
   }, []);
 
   const clearLatestReport = useCallback(async () => {
