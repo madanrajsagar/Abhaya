@@ -7,10 +7,10 @@ const logger = require('./utils/logger');
 const loadedEnvPath = ensureEnvLoaded();
 
 if (!loadedEnvPath) {
-  console.warn('backend/.env not found. Copy backend/.env.example -> backend/.env and restart the server.');
+  logger.warn('backend/.env not found. Copy backend/.env.example -> backend/.env and restart the server.');
 }
 
-console.log(`FIREBASE_API_KEY ${getEnvValue('FIREBASE_API_KEY') ? 'loaded' : 'missing'}`);
+logger.info(`FIREBASE_API_KEY ${getEnvValue('FIREBASE_API_KEY') ? 'loaded' : 'missing'}`);
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -93,36 +93,35 @@ app.use((err, req, res, next) => {
 });
 
 app.listen(PORT, '0.0.0.0', () => {
-  console.log(`SafeGuard Backend Server running on http://0.0.0.0:${PORT}`);
-  console.log('Available routes:');
-  console.log('POST   /api/auth/signup');
-  console.log('POST   /api/auth/login');
-  console.log('POST   /api/auth/refresh');
-  console.log('GET    /api/auth/profile');
-  console.log('PUT    /api/auth/profile');
-  console.log('DELETE /api/auth/account');
-  console.log('GET    /api/journey/geocode');
-  console.log('GET    /api/journey/route');
-  console.log('POST   /api/journey/check-deviation');
-  console.log('POST   /api/journey/sos');
-  console.log('GET    /api/history');
-  console.log('POST   /api/history');
-  console.log('POST   /api/history/:historyId/events');
-  console.log('PATCH  /api/history/:historyId');
-  console.log('GET    /api/vehicle-observations');
-  console.log('POST   /api/vehicle-observations');
-  console.log('POST   /api/save-video');
-  console.log('POST   /api/audio/transcribe');
-  console.log('GET    /api/user-videos/:userId');
-  console.log('DELETE /api/video/:id');
-  console.log('POST   /send-email');
-  console.log('POST   /api/send-email');
-  console.log('GET    /api/health');
-
   logger.info('Backend server started', {
     port: PORT,
     firebaseConfigured: Boolean(getEnvValue('FIREBASE_API_KEY')),
     envLoaded: Boolean(loadedEnvPath),
     logFilePath: logger.logFilePath,
+    routes: [
+      'POST   /api/auth/signup',
+      'POST   /api/auth/login',
+      'POST   /api/auth/refresh',
+      'GET    /api/auth/profile',
+      'PUT    /api/auth/profile',
+      'DELETE /api/auth/account',
+      'GET    /api/journey/geocode',
+      'GET    /api/journey/route',
+      'POST   /api/journey/check-deviation',
+      'POST   /api/journey/sos',
+      'GET    /api/history',
+      'POST   /api/history',
+      'POST   /api/history/:historyId/events',
+      'PATCH  /api/history/:historyId',
+      'GET    /api/vehicle-observations',
+      'POST   /api/vehicle-observations',
+      'POST   /api/save-video',
+      'POST   /api/audio/transcribe',
+      'GET    /api/user-videos/:userId',
+      'DELETE /api/video/:id',
+      'POST   /send-email',
+      'POST   /api/send-email',
+      'GET    /api/health',
+    ],
   });
 });

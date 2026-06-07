@@ -21,7 +21,6 @@ export function AuthProvider({ children }) {
         setUser(null);
       }
     } catch (error) {
-      console.error('Session check failed:', error);
     } finally {
       setLoading(false);
     }

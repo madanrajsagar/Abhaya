@@ -79,7 +79,6 @@ const apiRequest = async (endpoint, options = {}) => {
 
     return data;
   } catch (error) {
-    console.error(`API Error [${endpoint}] (${resolvedBaseUrl}${endpoint}):`, error.message);
     return {
       success: false,
       error: backendUnavailableMessage,
@@ -311,11 +310,6 @@ export const incidentAPI = {
     }
 
     try {
-      if (__DEV__) {
-        console.log('[cloudinary] uploadUrl =', uploadUrl);
-        console.log('[cloudinary] uploadPreset =', uploadPreset || '(missing)');
-      }
-
       const form = new FormData();
       form.append('file', {
         uri: videoUri,

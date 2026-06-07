@@ -80,8 +80,7 @@ export default function SettingsScreen({ navigation }) {
         try {
           const settings = await getJourneySettings();
           setJourneySettings(settings);
-        } catch (error) {
-          console.error('Error loading journey settings:', error);
+        } catch {
         }
       };
 

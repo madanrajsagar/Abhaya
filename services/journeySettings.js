@@ -64,7 +64,6 @@ export const getJourneySettings = async () => {
     }
     return DEFAULT_JOURNEY_SETTINGS;
   } catch (error) {
-    console.error('Error loading journey settings:', error);
     return DEFAULT_JOURNEY_SETTINGS;
   }
 };
@@ -80,7 +79,6 @@ export const updateJourneySettings = async (settingKey, value) => {
     await AsyncStorage.setItem(JOURNEY_SETTINGS_KEY, JSON.stringify(updated));
     return updated;
   } catch (error) {
-    console.error('Error updating journey settings:', error);
     throw error;
   }
 };
@@ -96,7 +94,6 @@ export const updateMultipleJourneySettings = async (settingsObject) => {
     await AsyncStorage.setItem(JOURNEY_SETTINGS_KEY, JSON.stringify(updated));
     return updated;
   } catch (error) {
-    console.error('Error updating journey settings:', error);
     throw error;
   }
 };
@@ -107,7 +104,6 @@ export const resetJourneySettings = async () => {
     await AsyncStorage.setItem(JOURNEY_SETTINGS_KEY, JSON.stringify(DEFAULT_JOURNEY_SETTINGS));
     return DEFAULT_JOURNEY_SETTINGS;
   } catch (error) {
-    console.error('Error resetting journey settings:', error);
     throw error;
   }
 };
@@ -118,7 +114,6 @@ export const getJourneySetting = async (settingKey) => {
     const settings = await getJourneySettings();
     return settings[settingKey];
   } catch (error) {
-    console.error('Error getting journey setting:', error);
     return DEFAULT_JOURNEY_SETTINGS[settingKey];
   }
 };

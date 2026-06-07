@@ -146,7 +146,6 @@ export default function HomeScreen({ navigation }) {
         setJourneyData(null);
       }
     } catch (error) {
-      console.log('Error loading journey:', error);
       setJourneyData(null);
     }
   }, []);
@@ -156,8 +155,6 @@ export default function HomeScreen({ navigation }) {
     try {
       const { status } = await Location.requestForegroundPermissionsAsync();
       if (status !== 'granted') {
-        console.log('Location permission denied');
-        // Set default Kolhapur location for testing
         setCurrentLocation({
           latitude: 16.7050,
           longitude: 74.2433,
@@ -196,8 +193,6 @@ export default function HomeScreen({ navigation }) {
 
       return subscription;
     } catch (error) {
-      console.log('Location tracking error:', error);
-      // Fallback to Kolhapur center for testing
       setCurrentLocation({
         latitude: 16.7050,
         longitude: 74.2433,

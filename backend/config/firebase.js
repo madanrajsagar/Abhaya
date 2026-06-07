@@ -1,5 +1,6 @@
 const admin = require('firebase-admin');
 const { getEnvValue } = require('../utils/loadEnv');
+const logger = require('../utils/logger');
 
 /**
  * Initialize Firebase Admin SDK if service account key is available.
@@ -25,15 +26,12 @@ try {
       credential: admin.credential.cert(serviceAccount),
     });
     adminInitialized = true;
-    console.log('Firebase Admin SDK initialized (full mode)');
+    logger.info('Firebase Admin SDK initialized (full mode)');
   } else {
-    console.log('No service account key found — running in REST-only mode');
-    console.log('Auth will work via Firebase REST API (API key).');
-    console.log('To enable Admin SDK, add: backend/config/serviceAccountKey.json');
+    logger.info('No service account key found — running in REST-only mode');
   }
 } catch (error) {
-  console.error('Firebase Admin init error:', error.message);
-  console.log('   Continuing in REST-only mode...');
+  logger.error('Firebase Admin init error', { error: error.message });
 }
 
 module.exports = { admin, adminInitialized };
