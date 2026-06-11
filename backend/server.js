@@ -1,5 +1,6 @@
 const express = require('express');
 const cors = require('cors');
+const rateLimit = require('express-rate-limit');
 
 const { ensureEnvLoaded, getEnvValue } = require('./utils/loadEnv');
 const logger = require('./utils/logger');
@@ -17,6 +18,13 @@ const PORT = process.env.PORT || 5000;
 
 app.use(cors());
 app.use(express.json({ limit: '8mb' }));
+
+app.use('/api/auth/login', rateLimit({ windowMs: 60 * 1000, max: 10, message: { success: false, error: 'Too many login attempts. Try again later.' } }));
+app.use('/api/auth/signup', rateLimit({ windowMs: 60 * 1000, max: 5, message: { success: false, error: 'Too many signup attempts. Try again later.' } }));
+app.use('/api/journey/sos', rateLimit({ windowMs: 60 * 1000, max: 5, message: { success: false, error: 'Too many SOS requests. Try again later.' } }));
+app.use('/api/audio/transcribe', rateLimit({ windowMs: 60 * 1000, max: 10, message: { success: false, error: 'Too many transcription requests. Try again later.' } }));
+app.use('/send-email', rateLimit({ windowMs: 60 * 1000, max: 5, message: { success: false, error: 'Too many email requests. Try again later.' } }));
+app.use('/api/send-email', rateLimit({ windowMs: 60 * 1000, max: 5, message: { success: false, error: 'Too many email requests. Try again later.' } }));
 
 app.use((req, res, next) => {
   const startedAt = Date.now();
