@@ -381,6 +381,8 @@ export default function HomeScreen({ navigation }) {
             <TouchableOpacity
               style={styles.headerIconButton}
               activeOpacity={0.85}
+              accessibilityLabel="Notifications"
+              accessibilityRole="button"
               onPress={() => navigation.navigate('Notifications')}
             >
               <Ionicons name="notifications-outline" size={22} color="#1f1f1f" />
@@ -390,6 +392,8 @@ export default function HomeScreen({ navigation }) {
             <TouchableOpacity
               style={styles.avatar}
               activeOpacity={0.85}
+              accessibilityLabel="Settings"
+              accessibilityRole="button"
               onPress={() => navigation.navigate('Settings')}
             >
               <Text style={styles.avatarText}>{avatarLetter}</Text>
@@ -564,6 +568,9 @@ export default function HomeScreen({ navigation }) {
               key={card.key}
               activeOpacity={0.88}
               style={styles.actionCard}
+              accessibilityLabel={card.title}
+              accessibilityRole="button"
+              accessibilityHint={card.subtitle}
               onPress={() => handleActionPress(card.key)}
             >
               <View style={styles.actionCardTop}>
@@ -588,6 +595,9 @@ export default function HomeScreen({ navigation }) {
         <TouchableOpacity
           activeOpacity={0.9}
           style={styles.sosWrap}
+          accessibilityLabel="Emergency SOS button"
+          accessibilityRole="button"
+          accessibilityHint="Tap 3 times to activate emergency"
           onPress={handleSosPress}
         >
           <View style={styles.sosButton}>
@@ -607,6 +617,8 @@ export default function HomeScreen({ navigation }) {
             <Text style={styles.activityTitle}>Recent Activity</Text>
             <TouchableOpacity
               activeOpacity={0.85}
+              accessibilityLabel="View all activity"
+              accessibilityRole="button"
               onPress={() => navigation.navigate('Notifications')}
             >
               <Ionicons name="chevron-forward" size={18} color="#9d9d9d" />
@@ -653,6 +665,9 @@ export default function HomeScreen({ navigation }) {
               key={item.key}
               activeOpacity={0.85}
               style={[styles.navItem, active && styles.navItemActive]}
+              accessibilityLabel={item.label}
+              accessibilityRole="tab"
+              accessibilityState={{ selected: active }}
               onPress={() => handleNavPress(item.key)}
             >
               <Ionicons
