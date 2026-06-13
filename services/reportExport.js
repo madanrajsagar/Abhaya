@@ -1,5 +1,5 @@
 import { Platform, Share } from 'react-native';
-import * as FileSystem from 'expo-file-system/legacy';
+import * as FileSystem from 'expo-file-system';
 
 const getSafeText = (value, fallback = '-') => {
   const text = String(value ?? '').trim();
