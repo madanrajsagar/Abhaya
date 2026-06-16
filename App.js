@@ -4,6 +4,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { ReportProvider } from './context/ReportContext';
+import ErrorBoundary from './context/ErrorBoundary';
 
 import LoginScreen from './screens/LoginScreen';
 import SignUpScreen from './screens/SignUpScreen';
@@ -65,9 +66,11 @@ export default function App() {
   return (
     <AuthProvider>
       <ReportProvider>
-        <NavigationContainer>
-          <AppNavigator />
-        </NavigationContainer>
+        <ErrorBoundary>
+          <NavigationContainer>
+            <AppNavigator />
+          </NavigationContainer>
+        </ErrorBoundary>
       </ReportProvider>
     </AuthProvider>
   );
