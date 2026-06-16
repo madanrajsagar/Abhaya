@@ -382,6 +382,8 @@ export default function HomeScreen({ navigation }) {
               style={styles.headerIconButton}
               activeOpacity={0.85}
               onPress={() => navigation.navigate('Notifications')}
+              accessibilityLabel="Notifications"
+              accessibilityRole="button"
             >
               <Ionicons name="notifications-outline" size={22} color="#1f1f1f" />
               <View style={styles.notificationDot} />
@@ -391,6 +393,8 @@ export default function HomeScreen({ navigation }) {
               style={styles.avatar}
               activeOpacity={0.85}
               onPress={() => navigation.navigate('Settings')}
+              accessibilityLabel="Settings"
+              accessibilityRole="button"
             >
               <Text style={styles.avatarText}>{avatarLetter}</Text>
             </TouchableOpacity>
@@ -417,6 +421,8 @@ export default function HomeScreen({ navigation }) {
             activeOpacity={0.88}
             style={styles.historyShortcut}
             onPress={() => navigation.navigate('JourneyHistory')}
+            accessibilityLabel="Journey history"
+            accessibilityRole="button"
           >
             <Ionicons name="time-outline" size={18} color="#7b57d1" />
             <Text style={styles.historyShortcutText}>Journey history</Text>
@@ -565,6 +571,9 @@ export default function HomeScreen({ navigation }) {
               activeOpacity={0.88}
               style={styles.actionCard}
               onPress={() => handleActionPress(card.key)}
+              accessibilityLabel={card.title}
+              accessibilityHint={card.subtitle}
+              accessibilityRole="button"
             >
               <View style={styles.actionCardTop}>
                 <View
@@ -589,6 +598,9 @@ export default function HomeScreen({ navigation }) {
           activeOpacity={0.9}
           style={styles.sosWrap}
           onPress={handleSosPress}
+          accessibilityLabel="Emergency SOS"
+          accessibilityHint="Tap 3 times quickly to activate emergency"
+          accessibilityRole="button"
         >
           <View style={styles.sosButton}>
             <Ionicons name="alert-circle-outline" size={52} color="#fff" />
@@ -608,6 +620,8 @@ export default function HomeScreen({ navigation }) {
             <TouchableOpacity
               activeOpacity={0.85}
               onPress={() => navigation.navigate('Notifications')}
+              accessibilityLabel="View all notifications"
+              accessibilityRole="button"
             >
               <Ionicons name="chevron-forward" size={18} color="#9d9d9d" />
             </TouchableOpacity>
@@ -654,6 +668,9 @@ export default function HomeScreen({ navigation }) {
               activeOpacity={0.85}
               style={[styles.navItem, active && styles.navItemActive]}
               onPress={() => handleNavPress(item.key)}
+              accessibilityLabel={item.label}
+              accessibilityRole="button"
+              accessibilityState={active ? { selected: true } : undefined}
             >
               <Ionicons
                 name={item.icon}
