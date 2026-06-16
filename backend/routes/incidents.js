@@ -8,6 +8,8 @@ const { verifyToken } = require('../middleware/auth');
 const router = express.Router();
 
 const DB_PATH = path.join(__dirname, '..', 'data', 'incidents.json');
+const INCIDENT_ID_MAX_LENGTH = 256;
+const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
 const readDb = () => {
   try {
@@ -94,6 +96,11 @@ router.get('/latest', (req, res) => {
  * Returns incident details (must belong to user).
  */
 router.get('/:incidentId', (req, res) => {
+  const { incidentId } = req.params;
+  if (!incidentId || incidentId.length > INCIDENT_ID_MAX_LENGTH || !UUID_RE.test(incidentId)) {
+    return res.status(400).json({ success: false, error: 'Invalid incident ID.' });
+  }
+
   const db = readDb();
   const incident = findIncident(db, req.params.incidentId);
 
@@ -109,6 +116,11 @@ router.get('/:incidentId', (req, res) => {
  * Returns video evidence list for an incident (must belong to user).
  */
 router.get('/:incidentId/videos', (req, res) => {
+  const { incidentId } = req.params;
+  if (!incidentId || incidentId.length > INCIDENT_ID_MAX_LENGTH || !UUID_RE.test(incidentId)) {
+    return res.status(400).json({ success: false, error: 'Invalid incident ID.' });
+  }
+
   const db = readDb();
   const incident = findIncident(db, req.params.incidentId);
 
@@ -125,6 +137,11 @@ router.get('/:incidentId/videos', (req, res) => {
  * Body: { url, label }
  */
 router.post('/:incidentId/videos', (req, res) => {
+  const { incidentId } = req.params;
+  if (!incidentId || incidentId.length > INCIDENT_ID_MAX_LENGTH || !UUID_RE.test(incidentId)) {
+    return res.status(400).json({ success: false, error: 'Invalid incident ID.' });
+  }
+
   const { url, label } = req.body || {};
   if (!url) {
     return res.status(400).json({ success: false, error: 'Video url is required.' });
