@@ -49,7 +49,6 @@ app.use('/api/history', historyRoutes);
 app.use('/api/vehicle-observations', vehicleObservationRoutes);
 app.use('/api/incidents', incidentRoutes);
 app.use('/api/audio', audioRoutes);
-app.use(userVideoRoutes);
 app.use('/api', userVideoRoutes);
 
 // Supports both:
