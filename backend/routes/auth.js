@@ -11,7 +11,7 @@ const router = express.Router();
 const IDENTITY_URL = 'https://identitytoolkit.googleapis.com/v1/accounts';
 const TOKEN_URL = 'https://securetoken.googleapis.com/v1/token';
 const FIREBASE_TIMEOUT_MS = Number(process.env.FIREBASE_TIMEOUT_MS || 8000);
-const DEFAULT_SAFETY_PASSWORD = '12345678';
+const DEFAULT_SAFETY_PASSWORD = null;
 
 const getApiKey = () => getEnvValue('FIREBASE_API_KEY');
 const normalizeEmail = (value) => String(value || '').trim().toLowerCase();
@@ -70,16 +70,16 @@ const isValidSafetyPassword = async ({ email, safetyPassword }) => {
 
   if (!adminInitialized) {
     return {
-      valid: normalizedPassword === DEFAULT_SAFETY_PASSWORD,
-      source: 'legacy_default',
+      valid: false,
+      source: 'admin_unavailable',
     };
   }
 
   const record = await getSafetyPasswordRecordByEmail(email);
   if (!record?.safetyPasswordHash) {
     return {
-      valid: normalizedPassword === DEFAULT_SAFETY_PASSWORD,
-      source: 'legacy_default',
+      valid: false,
+      source: 'not_set',
     };
   }
 
