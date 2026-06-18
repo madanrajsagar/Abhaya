@@ -112,7 +112,117 @@ The project contains both:
 - GitHub
 
 ---
+## System Architecture
 
+### High-Level Overview
+
+Abhaya follows a client-server architecture where the mobile application communicates with a backend API responsible for evidence management, report generation, and emergency notifications.
+
+```mermaid
+flowchart TD
+
+    A["React Native Mobile App"]
+    B["Express Backend API"]
+    C["Firebase"]
+    D["Cloudinary"]
+    E["Notification Service"]
+    F["SOS Reports"]
+
+    A -->|API Requests| B
+    A -->|Capture Evidence| F
+
+    F -->|Upload Media| D
+
+    B -->|Store Reports| C
+    B -->|Send Alerts| E
+
+    D -->|Media URLs| B
+    B -->|Processed Reports| A
+```
+
+---
+
+### SOS Workflow
+
+```mermaid
+sequenceDiagram
+
+    participant User
+    participant App
+    participant Backend
+    participant Cloudinary
+    participant Firebase
+    participant Notification
+
+    User->>App: Trigger SOS
+    App->>App: Capture Location
+    App->>App: Record Evidence
+    App->>Cloudinary: Upload Media
+    Cloudinary-->>Backend: Media URL
+    App->>Backend: Send Report
+    Backend->>Firebase: Store Report
+    Backend->>Notification: Send Alerts
+```
+---
+
+### Component Responsibilities
+
+#### Mobile Application (React Native + Expo)
+
+Responsible for:
+
+- SOS triggering
+- Camera and audio recording
+- Real-time location tracking
+- User interaction and navigation
+- Report viewing and evidence access
+
+#### Backend API (Node.js + Express)
+
+Responsible for:
+
+- Report processing
+- Notification orchestration
+- Media upload coordination
+- Database communication
+- Business logic and API handling
+
+#### Firebase
+
+Used for:
+
+- report storage
+- metadata persistence
+- authentication support
+
+#### Cloudinary
+
+Used for:
+
+- video/audio evidence storage
+- optimized media delivery
+- CDN-based retrieval
+
+#### Notification Services
+
+Used for:
+
+- emergency email alerts
+- escalation workflows
+
+---
+
+### Why This Architecture
+
+This architecture separates frontend and backend responsibilities, making the system:
+
+- scalable
+- maintainable
+- easier to extend
+- contributor-friendly
+- It also allows media handling, emergency communication, and report management to remain modular and independently manageable.
+
+---
 ## Project Structure
 
 ```bash
