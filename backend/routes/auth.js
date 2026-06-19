@@ -440,13 +440,21 @@ router.post('/login', async (req, res) => {
   }
 });
 
-router.post('/verify-safety-password', async (req, res) => {
+router.post('/verify-safety-password', verifyToken, async (req, res) => {
   const { email, safetyPassword } = req.body;
 
   if (!email || !safetyPassword) {
     return res.status(400).json({
       success: false,
       error: 'Email and safety password are required.',
+    });
+  }
+
+  const authenticatedEmail = req.user?.email;
+  if (authenticatedEmail && email !== authenticatedEmail) {
+    return res.status(403).json({
+      success: false,
+      error: 'You can only verify your own safety password.',
     });
   }
 
