@@ -572,7 +572,7 @@ router.get('/profile', verifyToken, async (req, res) => {
     });
     if (!apiKey) return;
 
-    const idToken = req.headers.authorization.split('Bearer ')[1];
+    const idToken = req.user.idToken || req.headers.authorization.split('Bearer ')[1];
     const { data } = await firebaseJson(
       `${IDENTITY_URL}:lookup?key=${apiKey}`,
       {
@@ -676,7 +676,7 @@ router.put('/profile', verifyToken, async (req, res) => {
     });
     if (!apiKey) return;
 
-    const idToken = req.headers.authorization.split('Bearer ')[1];
+    const idToken = req.user.idToken || req.headers.authorization.split('Bearer ')[1];
     const updateData = { idToken, returnSecureToken: false };
     if (displayName !== undefined) updateData.displayName = displayName;
     if (photoURL !== undefined) updateData.photoUrl = photoURL;
