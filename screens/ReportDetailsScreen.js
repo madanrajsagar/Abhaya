@@ -17,6 +17,7 @@ import * as Location from 'expo-location';
 import { useReport } from '../context/ReportContext';
 import { getIncidentReportById, getLatestIncidentReport } from '../services/reportStorage';
 import vehicleObservationAPI from '../services/vehicleObservations';
+import { formatResolvedAddress } from '../services/addressUtils';
 
 const formatTimestamp = (isoString) => {
   try {
@@ -46,24 +47,6 @@ const firstAvailable = (...values) =>
   values.find(isDisplayableValue) || '';
 
 const normalizePhone = (value) => String(value || '').replace(/[^\d+]/g, '');
-
-const formatResolvedAddress = (result) => {
-  if (!result) {
-    return '';
-  }
-
-  const primary = [result.name, result.street].filter(Boolean).join(', ');
-  const secondary = [
-    result.district,
-    result.city,
-    result.subregion,
-    result.region,
-    result.postalCode,
-    result.country,
-  ].filter(Boolean);
-
-  return [primary, secondary.join(', ')].filter(Boolean).join(', ');
-};
 
 const getMapLink = (location) => {
   const lat = Number(location?.lat);

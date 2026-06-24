@@ -21,6 +21,7 @@ import AudioAnalysisService from '../services/AudioAnalysisService';
 import { getEmergencyEmailAddresses } from '../services/emergencyEmailContacts';
 import { getJourneySettings } from '../services/journeySettings';
 import { saveIncidentReport } from '../services/reportStorage';
+import { formatResolvedAddress } from '../services/addressUtils';
 
 const RECORD_SECONDS = 7;
 const CAMERA_READY_DELAY_MS = 120;
@@ -30,24 +31,6 @@ const EMAIL_FAILURE_MESSAGE =
 
 const createIncidentId = () =>
   `inc_${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 8)}`;
-
-const formatResolvedAddress = (result) => {
-  if (!result) {
-    return '';
-  }
-
-  const primary = [result.name, result.street].filter(Boolean).join(', ');
-  const secondary = [
-    result.district,
-    result.city,
-    result.subregion,
-    result.region,
-    result.postalCode,
-    result.country,
-  ].filter(Boolean);
-
-  return [primary, secondary.join(', ')].filter(Boolean).join(', ');
-};
 
 const getUserDisplayName = (user) =>
   String(user?.displayName || user?.name || 'Abhaya User').trim() || 'Abhaya User';

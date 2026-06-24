@@ -31,6 +31,7 @@ import {
   verifySecurityPassword,
 } from '../services/securityPassword';
 import crimeZones from '../kolhapur_crime_zones.json';
+import { formatResolvedAddress } from '../services/addressUtils';
 
 const { width } = Dimensions.get('window');
 
@@ -135,24 +136,6 @@ const fitDelta = (points = []) => {
 };
 
 const getCrimeZoneStyle = (risk = 'low') => CRIME_ZONE_STYLES[risk] || CRIME_ZONE_STYLES.low;
-
-const formatResolvedAddress = (result) => {
-  if (!result) {
-    return '';
-  }
-
-  const primary = [result.name, result.street].filter(Boolean).join(', ');
-  const secondary = [
-    result.district,
-    result.city,
-    result.subregion,
-    result.region,
-    result.postalCode,
-    result.country,
-  ].filter(Boolean);
-
-  return [primary, secondary.join(', ')].filter(Boolean).join(', ');
-};
 
 const formatCrimeTypes = (crimeTypes = []) =>
   Array.isArray(crimeTypes) && crimeTypes.length
