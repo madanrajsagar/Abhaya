@@ -127,10 +127,10 @@ export default function HomeScreen({ navigation }) {
       const journeyJSON = await AsyncStorage.getItem('@abhaya_active_journey');
       if (journeyJSON) {
         const journey = JSON.parse(journeyJSON);
-        
+
         // Journey is active if it has a route with points
         const isActive = Array.isArray(journey.route) && journey.route.length > 0;
-        
+
         // Prepare the journey data with proper structure for risk calculation
         const journeyData = {
           isActive,
@@ -140,7 +140,7 @@ export default function HomeScreen({ navigation }) {
           eta: journey.eta,
           distanceKm: journey.distanceKm,
         };
-        
+
         setJourneyData(journeyData);
       } else {
         setJourneyData(null);
@@ -379,9 +379,13 @@ export default function HomeScreen({ navigation }) {
 
           <View style={styles.headerActions}>
             <TouchableOpacity
-              style={styles.headerIconButton}
-              activeOpacity={0.85}
-              onPress={() => navigation.navigate('Notifications')}
+              activeOpacity={0.9}
+              style={styles.sosWrap}
+              onPress={handleSosPress}
+              accessibilityRole="button"
+              accessibilityLabel="Emergency SOS Button"
+              accessibilityHint="Tap three times to activate emergency assistance and start evidence recording"
+              accessible={true}
             >
               <Ionicons name="notifications-outline" size={22} color="#1f1f1f" />
               <View style={styles.notificationDot} />

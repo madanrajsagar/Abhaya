@@ -33,6 +33,37 @@ The project contains both:
 - SOS trigger from the mobile app
 - Emergency workflow activation
 - Alert/report generation
+## SOS Emergency Workflow
+
+```mermaid
+flowchart TD
+
+A[User Triggers SOS] --> B[Emergency Workflow Activated]
+B --> C[Capture Location Information]
+B --> D[Record Evidence]
+D --> E[Upload Video Evidence]
+C --> F[Generate Incident Report]
+E --> F
+F --> G[Notify Emergency Contacts]
+G --> H[Send Email Alerts]
+G --> I[Send SMS Alerts]
+F --> J[Store Incident Data]
+J --> K[Future Investigation and Review]
+```
+
+### Workflow Explanation
+
+1. The user triggers the SOS button from the mobile application.
+2. The emergency workflow is activated immediately.
+3. The application captures location details and records evidence.
+4. Evidence is uploaded securely to cloud storage.
+5. An incident report is generated automatically.
+6. Emergency contacts receive alerts through email or SMS.
+7. Incident information is stored for future investigation and review.
+
+```
+```
+
 
 ### Evidence Recording
 
