@@ -4,18 +4,14 @@ const net = require('net');
 const twilio = require('twilio');
 const logger = require('../utils/logger');
 
-const DEFAULT_RECIPIENTS = [
-  'khataleharshad26@gmail.com',
-  'madanrajsagar83@gmail.com',
-  'gaikwadshambhu24@gmail.com',
-  'ameymohite2006@gmail.com',
-];
+const DEFAULT_RECIPIENTS = [];
+
 const DEFAULT_SMS_RECIPIENTS = [
-  process.env.EMERGENCY_CONTACT_NUMBER || '+919860274550',
+  process.env.EMERGENCY_CONTACT_NUMBER || '',
   process.env.POLICE_CONTACT_NUMBER || '',
 ].map((value) => String(value || '').trim()).filter(Boolean);
 const HARDCODED_CALL_RECIPIENTS = [
-  process.env.TWILIO_CALL_TO_NUMBER || '+919860274550',
+  process.env.TWILIO_CALL_TO_NUMBER || '',
 ].map((value) => String(value || '').trim()).filter(Boolean);
 
 const unavailableValuePattern = /^(unknown\b.*|not available|plate not readable|plate not detected|-|n\/a)$/i;

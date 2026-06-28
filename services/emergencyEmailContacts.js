@@ -21,12 +21,7 @@ const buildDefaultLabel = (email, index = 0) => {
   return titled ? `${titled} Email` : `Emergency Email ${index + 1}`;
 };
 
-export const DEFAULT_EMAIL_CONTACTS = [
-  { id: 'default_email_1', label: 'Harshad Email', email: 'khataleharshad26@gmail.com' },
-  { id: 'default_email_2', label: 'Madan Email', email: 'madanrajsagar83@gmail.com' },
-  { id: 'default_email_3', label: 'Shambhu Email', email: 'gaikwadshambhu24@gmail.com' },
-  { id: 'default_email_4', label: 'Amey Email', email: 'ameymohite2006@gmail.com' },
-];
+export const DEFAULT_EMAIL_CONTACTS = [];
 
 export const isValidEmergencyEmail = (value) =>
   /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(normalizeEmail(value));
