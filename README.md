@@ -1,81 +1,82 @@
-# Abhaya - Women Safety App
+# 🛡️ Abhaya – Women Safety App
 
-Abhaya is a women safety mobile application built using React Native and Expo.  
-The app focuses on emergency assistance, SOS alerts, real-time location support, incident reporting, and video evidence storage.
+Abhaya is a cross-platform **Women Safety Mobile Application** built using **React Native (Expo)** and **Node.js**.
 
-The main goal of Abhaya is to provide a quick and reliable safety solution during emergency situations by allowing users to trigger SOS, capture evidence, generate incident reports, and notify emergency contacts.
+The application is designed to provide quick emergency assistance through **SOS alerts**, **real-time location support**, **incident reporting**, and **secure evidence storage**.
 
----
-
-## Project Overview
-
-Abhaya is designed to help users during unsafe or emergency situations.  
-When the user triggers SOS, the app can start the emergency workflow, capture important evidence, upload video proof, generate an incident report, and send alert information to emergency contacts.
-
-The project contains both:
-
-- Mobile frontend built with Expo React Native
-- Backend API built with Node.js and Express.js
+Its primary goal is to help users respond effectively during emergency situations by enabling them to notify emergency contacts, capture evidence, and generate incident reports.
 
 ---
 
-## Features
+## 📑 Table of Contents
 
-### User Authentication
+- Features
+- Tech Stack
+- Project Structure
+- Getting Started
+- Installation
+- Environment Variables
+- Deployment
+- Contributing
+- Future Enhancements
+- License
 
-- User signup
-- User login
-- Profile management
-- Token-based authentication flow
+---
 
-### SOS Emergency System
+# ✨ Features
 
-- SOS trigger from the mobile app
+## 🔐 User Authentication
+
+- User Signup
+- User Login
+- Profile Management
+- Token-based Authentication
+
+## 🚨 SOS Emergency System
+
+- One-tap SOS trigger
 - Emergency workflow activation
-- Alert/report generation
+- Alert generation
+- Emergency contact notification
 
-### Evidence Recording
+## 📹 Evidence Recording
 
 - Camera and microphone access
 - Video evidence recording
 - Evidence upload support
-- Evidence video viewing inside the app
+- In-app evidence viewing
 
-### Incident Report
+## 📄 Incident Reporting
 
 - Automatic incident report generation
 - Report details screen
-- Evidence URL attached with report
-- Report storage and retrieval support
+- Evidence URL attachment
+- Report storage and retrieval
 
-### Location and Map Support
+## 📍 Location & Maps
 
-- Location access using Expo Location
-- Map integration
-- Location-based safety workflow support
+- Real-time location access
+- Expo Location integration
+- Map support
+- Location-based emergency workflow
 
-### Cloud Storage
+## ☁️ Cloud Storage
 
-- Cloudinary integration for video evidence upload
-- Firebase integration for backend-side data handling
+- Cloudinary integration
+- Firebase integration
+- Secure evidence storage
 
-### Alert System
+## 📧 Alert System
 
-- Email alert support using Nodemailer
-- Backend API for sending emergency alerts
-- Twilio support available in backend dependencies
-
-### Deployment Support
-
-- Expo app build support using EAS
-- Backend deployment support using Render
-- Environment-based configuration
+- Email notifications using Nodemailer
+- Backend emergency alert APIs
+- Twilio integration support
 
 ---
 
-## Tech Stack
+# 🛠️ Tech Stack
 
-### Frontend
+## Frontend
 
 - React Native
 - Expo
@@ -90,7 +91,7 @@ The project contains both:
 - Firebase Client SDK
 - Expo Linear Gradient
 
-### Backend
+## Backend
 
 - Node.js
 - Express.js
@@ -102,76 +103,198 @@ The project contains both:
 - Dotenv
 - Nodemon
 
-### Cloud and Services
+## Cloud & Services
 
 - Firebase
 - Cloudinary
-- Gmail SMTP / Nodemailer
+- Gmail SMTP
 - Render
-- EAS Build
+- Expo EAS Build
 - GitHub
 
 ---
 
-## Project Structure
+# 📁 Project Structure
 
-```bash
+```text
 Abhaya/
 │
-├── assets/                  # App images and static assets
-├── backend/                 # Node.js Express backend
-├── context/                 # React context files
-├── ffdemo/                  # Demo/extra project files
-├── screens/                 # App screens
+├── assets/                  # Images and static assets
+├── backend/                 # Node.js + Express backend
+├── context/                 # React Context
+├── ffdemo/                  # Demo resources
+├── screens/                 # Application screens
 ├── services/                # API and helper services
 │
-├── App.js                   # Main app component
-├── app.json                 # Expo app configuration
-├── eas.json                 # EAS build configuration
-├── index.js                 # App entry point
-├── package.json             # Frontend dependencies
+├── App.js
+├── app.json
+├── eas.json
+├── index.js
+├── package.json
 ├── package-lock.json
-├── .env.example             # Example frontend environment variables
+├── .env.example
 ├── .gitignore
 └── README.md
+```
 
-## Getting Started
+---
 
-### Prerequisites
+# 🚀 Getting Started
 
-- Node.js v18+
-- npm v9+
-- Expo CLI: `npm install -g expo-cli`
-- Expo Go app on your phone (for testing)
+## Prerequisites
 
-### Clone the Repository
+Before running the project, make sure you have:
+
+- Node.js (v18 or later recommended)
+- npm
+- Expo CLI
+- Expo Go (Android/iOS)
+
+---
+
+# 📥 Installation
+
+## 1. Clone the Repository
 
 ```bash
 git clone https://github.com/madanrajsagar/Abhaya.git
 cd Abhaya
 ```
 
-### Frontend Setup
+---
+
+## 2. Install Frontend Dependencies
 
 ```bash
 npm install
+```
+
+---
+
+## 3. Configure Environment Variables
+
+Copy the example environment file.
+
+```bash
 cp .env.example .env
-# Open .env and fill in your keys
+```
+
+Update the environment variables with your own configuration.
+
+---
+
+## 4. Start the Frontend
+
+```bash
 npx expo start
 ```
 
-### Backend Setup
+---
+
+## 5. Backend Setup
+
+Move to the backend directory.
 
 ```bash
 cd backend
+```
+
+Install backend dependencies.
+
+```bash
 npm install
-# Add your backend env variables to backend/.env
+```
+
+Configure backend environment variables.
+
+```bash
+cp .env.example .env
+```
+
+Start the backend server.
+
+```bash
 npm run dev
 ```
 
-### Environment Variables
+> **Note:** If the backend does not include a `dev` script, use the script available in `backend/package.json`.
 
-Copy `.env.example` to `.env` and fill in:
-- Firebase config keys
-- Cloudinary credentials
-- Backend API URL
+---
+
+# 🔑 Environment Variables
+
+Configure the following values inside your `.env` files.
+
+| Variable | Description |
+|----------|-------------|
+| Firebase Configuration | Firebase project credentials |
+| Cloudinary Credentials | Cloudinary configuration |
+| Backend API URL | Backend server endpoint |
+| SMTP Credentials | Email notification service |
+| Twilio Credentials | SMS alert service (if enabled) |
+
+---
+
+# 🚀 Deployment
+
+### Frontend
+
+- Expo Application Services (EAS)
+
+### Backend
+
+- Render
+
+---
+
+# 🤝 Contributing
+
+Contributions are welcome!
+
+1. Fork the repository.
+2. Create a feature branch.
+
+```bash
+git checkout -b feature/your-feature-name
+```
+
+3. Commit your changes.
+
+```bash
+git commit -m "docs: improve README documentation"
+```
+
+4. Push the branch.
+
+```bash
+git push origin feature/your-feature-name
+```
+
+5. Open a Pull Request.
+
+Please ensure your changes follow the project's coding style and documentation standards.
+
+---
+
+# 🚀 Future Enhancements
+
+- Push Notifications
+- Live Location Sharing
+- Offline SOS Support
+- AI-based Threat Detection
+- Wearable Device Integration
+- Enhanced Emergency Analytics
+
+---
+
+# 📄 License
+
+This project is distributed under the license specified in the repository.
+
+---
+
+# ❤️ Acknowledgements
+
+Abhaya aims to leverage modern mobile technologies to provide a reliable and accessible emergency response solution for women's safety.
+
+Every contribution helps improve the project and makes it more useful for the community.
