@@ -1,6 +1,7 @@
 {
   "name": "womensafetyappjs",
   "version": "1.0.0",
+  "description": "Abhaya — women's safety app with real-time journey tracking, SOS alerts, and vehicle scanning",
   "main": "index.js",
   "scripts": {
     "start": "expo start",
