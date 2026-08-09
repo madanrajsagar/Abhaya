@@ -141,7 +141,6 @@ Abhaya/
 
 - Node.js v18+
 - npm v9+
-- Expo CLI: `npm install -g expo-cli`
 - Expo Go app on your phone (for testing)
 
 ### Clone the Repository
