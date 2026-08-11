@@ -19,29 +19,6 @@ const calculateDistance = (lat1, lon1, lat2, lon2) => {
 };
 
 /**
- * Get time-based risk multiplier
- * Night hours (8 PM - 6 AM) have higher risk
- */
-const getTimeMultiplier = () => {
-  const now = new Date();
-  const hour = now.getHours();
-
-  if (hour >= 20 || hour < 6) {
-    // Night: 8 PM - 6 AM
-    return 1.5;
-  } else if (hour >= 6 && hour < 9) {
-    // Early morning: 6 AM - 9 AM (moderate risk)
-    return 1.2;
-  } else if (hour >= 17 && hour < 20) {
-    // Evening: 5 PM - 8 PM (moderate risk)
-    return 1.2;
-  } else {
-    // Day: 9 AM - 5 PM
-    return 1.0;
-  }
-};
-
-/**
  * Get current location's crime zone risk
  * Also returns baseline risk if in Kolhapur
  */
@@ -141,29 +118,6 @@ const calculateRouteDeviation = (currentLocation, plannedRoute) => {
   const deviationPercentage = Math.min(100, (deviationDistance / 1800) * 100);
 
   return deviationPercentage;
-};
-
-/**
- * Calculate activity-based risk adjustment
- * Returns risk multiplier
- */
-const getActivityRiskMultiplier = (isJourneyActive, isDeviated) => {
-  let multiplier = 1.0;
-
-  if (isJourneyActive) {
-    if (isDeviated) {
-      // Significant deviation during journey = HIGH RISK
-      multiplier = 1.5; // Increase risk when deviating from planned route
-    } else {
-      // On track journey = lower risk
-      multiplier = 0.8;
-    }
-  } else {
-    // No active journey tracking = normal risk
-    multiplier = 1.0;
-  }
-
-  return multiplier;
 };
 
 /**
