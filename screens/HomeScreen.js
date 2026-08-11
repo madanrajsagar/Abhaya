@@ -95,8 +95,8 @@ const formatActivityTime = (value) => {
 
 export default function HomeScreen({ navigation }) {
   const { user } = useAuth();
-  const displayName = user?.displayName || user?.name || 'Priya';
-  const avatarLetter = displayName.trim().charAt(0).toUpperCase() || 'P';
+  const displayName = user?.displayName || user?.name || 'User';
+  const avatarLetter = displayName.trim().charAt(0).toUpperCase() || 'U';
   const [recentActivity, setRecentActivity] = useState([]);
   const [activityLoading, setActivityLoading] = useState(true);
   const [riskData, setRiskData] = useState(null);
@@ -404,7 +404,7 @@ export default function HomeScreen({ navigation }) {
           </View>
           <View style={styles.metaItem}>
             <Ionicons name="cloud-outline" size={14} color="#7b57d1" />
-            <Text style={styles.metaText}>23 C</Text>
+            <Text style={styles.metaText}>Abhaya</Text>
           </View>
         </View>
 
