@@ -1,5 +1,6 @@
 const express = require('express');
 const cors = require('cors');
+const helmet = require('helmet');
 
 const { ensureEnvLoaded, getEnvValue } = require('./utils/loadEnv');
 const logger = require('./utils/logger');
@@ -10,12 +11,17 @@ if (!loadedEnvPath) {
   console.warn('backend/.env not found. Copy backend/.env.example -> backend/.env and restart the server.');
 }
 
-console.log(`FIREBASE_API_KEY ${getEnvValue('FIREBASE_API_KEY') ? 'loaded' : 'missing'}`);
 
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-app.use(cors());
+const allowedOrigins = (getEnvValue('ALLOWED_ORIGINS') || '')
+  .split(',')
+  .map((s) => s.trim())
+  .filter(Boolean);
+
+app.use(helmet());
+app.use(cors({ origin: allowedOrigins }));
 app.use(express.json({ limit: '8mb' }));
 
 app.use((req, res, next) => {
