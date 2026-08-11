@@ -5,7 +5,9 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "dev": "nodemon server.js"
+    "dev": "nodemon server.js",
+    "lint": "eslint .",
+    "test": "echo \"No tests yet\" && exit 0"
   },
   "dependencies": {
     "cors": "^2.8.5",
