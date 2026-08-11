@@ -2,6 +2,7 @@ const express = require('express');
 const multer = require('multer');
 
 const logger = require('../utils/logger');
+const { verifyToken } = require('../middleware/auth');
 
 const router = express.Router();
 
@@ -186,7 +187,7 @@ const transcribeWithGroq = async ({ file, language }) => {
   }
 };
 
-router.post('/transcribe', (req, res) => {
+router.post('/transcribe', verifyToken, (req, res) => {
   upload.single('audio')(req, res, async (error) => {
     if (error) {
       const statusCode = error.code === 'LIMIT_FILE_SIZE' ? 413 : 400;
