@@ -2,6 +2,7 @@ const express = require('express');
 const multer = require('multer');
 
 const logger = require('../utils/logger');
+const PANIC_KEYWORD_GROUPS = require('../../shared/panicKeywords.json');
 
 const router = express.Router();
 
@@ -10,14 +11,6 @@ const GROQ_TRANSCRIPTION_MODEL =
   process.env.GROQ_TRANSCRIPTION_MODEL || 'whisper-large-v3-turbo';
 const GROQ_TIMEOUT_MS = Number(process.env.GROQ_TIMEOUT_MS || 15000);
 const GROQ_API_URL = 'https://api.groq.com/openai/v1/audio/transcriptions';
-
-const PANIC_KEYWORD_GROUPS = {
-  help: ['help', 'help me', 'emergency', 'save me'],
-  vachva: ['vachva', 'vaachva', 'vachava', 'wachva', 'vachao'],
-  madat: ['madat', 'madad', 'madat kara', 'mala madat kara'],
-  soda: ['soda', 'sodha', 'sod', 'mala soda', 'chhoda', 'chhodo', 'chhod do', 'chod do'],
-  bachao: ['bachao', 'bachav', 'bachao bachao'],
-};
 
 const KEYWORD_VARIANTS = Object.values(PANIC_KEYWORD_GROUPS).flat();
 

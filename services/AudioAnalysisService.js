@@ -1,6 +1,7 @@
 import { Audio } from 'expo-av';
 
 import journeyAPI from './journey';
+import PANIC_KEYWORD_GROUPS from '../shared/panicKeywords.json';
 
 const AUDIO_SEGMENT_MS = 7000;
 const METERING_INTERVAL_MS = 250;
@@ -10,14 +11,6 @@ const SCREAM_PEAK_DB_THRESHOLD = -6;
 const SCREAM_SPIKE_DB_DELTA = 24;
 const DEFAULT_AUDIO_TYPE = 'audio/mp4';
 const DEFAULT_AUDIO_EXTENSION = '.m4a';
-
-const PANIC_KEYWORD_GROUPS = {
-  help: ['help', 'help me', 'emergency', 'save me'],
-  vachva: ['vachva', 'vaachva', 'vachava', 'wachva', 'vachao'],
-  madat: ['madat', 'madad', 'madat kara', 'mala madat kara'],
-  soda: ['soda', 'sodha', 'sod', 'mala soda', 'chhoda', 'chhodo', 'chhod do', 'chod do'],
-  bachao: ['bachao', 'bachav', 'bachao bachao'],
-};
 
 const KEYWORD_VARIANTS = Object.values(PANIC_KEYWORD_GROUPS).flat();
 
