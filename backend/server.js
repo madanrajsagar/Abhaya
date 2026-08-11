@@ -16,7 +16,7 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 app.use(cors());
-app.use(express.json({ limit: '8mb' }));
+app.use(express.json({ limit: '1mb' }));
 
 app.use((req, res, next) => {
   const startedAt = Date.now();
@@ -46,6 +46,7 @@ const audioRoutes = require('./routes/audio');
 app.use('/api/auth', authRoutes);
 app.use('/api/journey', journeyRoutes);
 app.use('/api/history', historyRoutes);
+app.use('/api/vehicle-observations', express.json({ limit: '10mb' }));
 app.use('/api/vehicle-observations', vehicleObservationRoutes);
 app.use('/api/incidents', incidentRoutes);
 app.use('/api/audio', audioRoutes);
