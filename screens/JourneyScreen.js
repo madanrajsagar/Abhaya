@@ -30,7 +30,7 @@ import {
   SECURITY_PASSWORD_DESCRIPTION,
   verifySecurityPassword,
 } from '../services/securityPassword';
-import crimeZones from '../kolhapur_crime_zones.json';
+import crimeZones from '../default_crime_zones.json';
 
 const { width } = Dimensions.get('window');
 

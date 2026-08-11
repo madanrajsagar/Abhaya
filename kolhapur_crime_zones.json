@@ -198,5 +198,8 @@
     "radius": 360,
     "crime_types": ["assault", "harassment", "kidnapping"],
     "description": "Area near water body with reported assault and harassment incidents, unsafe for women travelling alone at night."
+  },
+  {
+    "_note": "This file contains sample crime zone data for Kolhapur, India. Replace the entries (excluding this one) with real data for your deployment region. Each zone needs id, name, latitude, longitude, risk, radius, crime_types, and description."
   }
 ]

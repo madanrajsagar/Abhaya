@@ -1,4 +1,4 @@
-import crimeZones from '../kolhapur_crime_zones.json';
+import crimeZones from '../default_crime_zones.json';
 
 /**
  * Calculate distance between two coordinates using Haversine formula
