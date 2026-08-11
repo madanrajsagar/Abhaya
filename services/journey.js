@@ -1,45 +1,8 @@
 import { BASE_URL, backendUnavailableMessage } from './backendConfig';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { refreshToken } from './api';
 
 const TOKEN_KEY = '@safeguard_token';
-const REFRESH_KEY = '@safeguard_refresh';
-
-const refreshToken = async () => {
-  const storedRefresh = await AsyncStorage.getItem(REFRESH_KEY);
-  if (!storedRefresh) {
-    return false;
-  }
-
-  let response;
-
-  try {
-    response = await fetch(`${BASE_URL}/auth/refresh`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ refreshToken: storedRefresh }),
-    });
-  } catch (error) {
-    const networkError = new Error(backendUnavailableMessage);
-    networkError.cause = error;
-    throw networkError;
-  }
-
-  const payload = await response.json().catch(() => ({}));
-
-  if (!response.ok || payload.success === false || !payload.data?.idToken) {
-    return false;
-  }
-
-  await AsyncStorage.setItem(TOKEN_KEY, payload.data.idToken);
-
-  if (payload.data.refreshToken) {
-    await AsyncStorage.setItem(REFRESH_KEY, payload.data.refreshToken);
-  }
-
-  return true;
-};
 
 const request = async (endpoint, options = {}) => {
   let response;

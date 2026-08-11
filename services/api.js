@@ -131,7 +131,7 @@ const persistUserProfile = async (nextUser) => {
   await AsyncStorage.setItem(USER_KEY, JSON.stringify(mergedUser));
 };
 
-const refreshToken = async () => {
+export const refreshToken = async () => {
   try {
     const storedRefresh = await AsyncStorage.getItem(REFRESH_KEY);
     if (!storedRefresh) return false;
