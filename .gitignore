@@ -71,6 +71,7 @@ backend/tmp/
 backend/temp/
 backend/coverage/
 backend/.cache/
+backend/data/incidents.json
 
 # =========================
 # Logs / debug
