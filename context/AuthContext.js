@@ -7,25 +7,23 @@ export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // Check for existing session on app start
   useEffect(() => {
+    const checkSession = async () => {
+      try {
+        const result = await authAPI.validateSession();
+        if (result.valid) {
+          setUser(result.user);
+        } else {
+          setUser(null);
+        }
+      } catch (error) {
+      } finally {
+        setLoading(false);
+      }
+    };
+
     checkSession();
   }, []);
-
-  const checkSession = async () => {
-    try {
-      const result = await authAPI.validateSession();
-      if (result.valid) {
-        setUser(result.user);
-      } else {
-        setUser(null);
-      }
-    } catch (error) {
-      console.error('Session check failed:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const login = async (email, password) => {
     const result = await authAPI.login(email, password);
