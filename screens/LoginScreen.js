@@ -287,10 +287,6 @@ export default function LoginScreen({ navigation }) {
               </TouchableOpacity>
             </View>
 
-            {/* Forgot Password */}
-            <TouchableOpacity style={styles.forgotBtn}>
-              <Text style={styles.forgotText}>Forgot Password?</Text>
-            </TouchableOpacity>
 
             {/* Login Button */}
             <Animated.View style={{ transform: [{ scale: buttonScale }] }}>
@@ -318,25 +314,7 @@ export default function LoginScreen({ navigation }) {
               </TouchableOpacity>
             </Animated.View>
 
-            {/* Divider */}
-            <View style={styles.dividerContainer}>
-              <View style={styles.divider} />
-              <Text style={styles.dividerText}>or continue with</Text>
-              <View style={styles.divider} />
-            </View>
 
-            {/* Social Login */}
-            <View style={styles.socialContainer}>
-              <TouchableOpacity style={styles.socialButton}>
-                <Ionicons name="logo-google" size={22} color="#EA4335" />
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.socialButton}>
-                <Ionicons name="logo-apple" size={22} color="#333" />
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.socialButton}>
-                <Ionicons name="finger-print" size={22} color="#8b3fa0" />
-              </TouchableOpacity>
-            </View>
           </Animated.View>
 
           {/* Sign Up Link */}
@@ -499,15 +477,6 @@ const styles = StyleSheet.create({
   eyeIcon: {
     padding: 4,
   },
-  forgotBtn: {
-    alignSelf: 'flex-end',
-    marginBottom: 20,
-  },
-  forgotText: {
-    fontSize: 13,
-    color: '#8b3fa0',
-    fontWeight: '600',
-  },
   loginButton: {
     borderRadius: 14,
     overflow: 'hidden',
@@ -533,37 +502,6 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     color: '#fff',
     letterSpacing: 0.5,
-  },
-  dividerContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 20,
-  },
-  divider: {
-    flex: 1,
-    height: 1,
-    backgroundColor: '#e0e0e0',
-  },
-  dividerText: {
-    marginHorizontal: 12,
-    fontSize: 12,
-    color: '#aaa',
-    fontWeight: '500',
-  },
-  socialContainer: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    gap: 16,
-  },
-  socialButton: {
-    width: 52,
-    height: 52,
-    borderRadius: 14,
-    backgroundColor: '#f5f5f8',
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderWidth: 1,
-    borderColor: '#eee',
   },
   signupContainer: {
     flexDirection: 'row',
