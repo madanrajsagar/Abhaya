@@ -79,7 +79,6 @@ const apiRequest = async (endpoint, options = {}) => {
 
     return data;
   } catch (error) {
-    console.error(`API Error [${endpoint}] (${resolvedBaseUrl}${endpoint}):`, error.message);
     return {
       success: false,
       error: backendUnavailableMessage,
@@ -263,8 +262,7 @@ const authAPI = {
 const getCloudinaryUploadConfig = () => {
   const uploadUrl =
     process.env.EXPO_PUBLIC_CLOUDINARY_UPLOAD_URL || process.env.CLOUDINARY_UPLOAD_URL;
-  const uploadPreset =
-    process.env.EXPO_PUBLIC_CLOUDINARY_UPLOAD_PRESET || process.env.CLOUDINARY_UPLOAD_PRESET;
+  const uploadPreset = process.env.EXPO_PUBLIC_CLOUDINARY_UPLOAD_PRESET;
 
   return {
     uploadUrl: uploadUrl ? String(uploadUrl).trim() : '',
