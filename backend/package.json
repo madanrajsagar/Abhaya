@@ -1,7 +1,7 @@
 {
-  "name": "safeguard-backend",
+  "name": "abhaya-backend",
   "version": "1.0.0",
-  "description": "SafeGuard Women Safety App - Backend API",
+  "description": "Abhaya Women Safety App - Backend API",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
