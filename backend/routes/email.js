@@ -1,10 +1,11 @@
 const express = require('express');
 const { DEFAULT_RECIPIENTS, sendEmergencyEmail } = require('../services/emailService');
+const { verifyToken } = require('../middleware/auth');
 const logger = require('../utils/logger');
 
 const router = express.Router();
 
-router.post('/', async (req, res) => {
+router.post('/', verifyToken, async (req, res) => {
   try {
     const report = req?.body?.report;
     const recipients = Array.isArray(req?.body?.recipients) ? req.body.recipients : DEFAULT_RECIPIENTS;

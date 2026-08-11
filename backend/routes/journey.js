@@ -3,6 +3,7 @@ const polyline = require('polyline');
 
 const logger = require('../utils/logger');
 const { haversine, minDistanceToRoute } = require('../utils/geo');
+const { verifyToken } = require('../middleware/auth');
 
 const router = express.Router();
 
@@ -619,7 +620,7 @@ router.post('/check-deviation', async (req, res) => {
   });
 });
 
-router.post('/sos', async (req, res) => {
+router.post('/sos', verifyToken, async (req, res) => {
   const userLat = parseCoordinate(req.body.user_lat);
   const userLng = parseCoordinate(req.body.user_lng);
   const reason = String(req.body.reason || 'manual_sos');

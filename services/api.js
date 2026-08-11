@@ -283,7 +283,6 @@ export const incidentAPI = {
     apiRequest('/send-email', {
       method: 'POST',
       body: { report, recipients, deliveryPreferences },
-      authenticated: false,
     }),
 
   getLatestIncident: async () => apiRequest('/incidents/latest', { method: 'GET' }),
