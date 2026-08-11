@@ -672,6 +672,12 @@ router.post('/sos', async (req, res) => {
       logger.error('Journey SOS delivery failed', {
         error: error.message,
       });
+
+      return res.status(502).json({
+        success: false,
+        error: 'SOS alert recorded but SMS delivery failed.',
+        data: { mapLink },
+      });
     }
   }
 
