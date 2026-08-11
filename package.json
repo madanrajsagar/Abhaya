@@ -6,7 +6,11 @@
     "start": "expo start",
     "android": "expo start --android",
     "ios": "expo start --ios",
-    "web": "expo start --web"
+    "web": "expo start --web",
+    "prepare": "husky"
+  },
+  "lint-staged": {
+    "*.js": ["eslint --fix", "prettier --write"]
   },
   "dependencies": {
     "@expo/vector-icons": "^15.0.3",
@@ -29,6 +33,10 @@
     "react-native-maps": "1.20.1",
     "react-native-safe-area-context": "~5.6.0",
     "react-native-screens": "~4.16.0"
+  },
+  "devDependencies": {
+    "husky": "^9.0.0",
+    "lint-staged": "^15.0.0"
   },
   "private": true
 }
