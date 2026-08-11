@@ -102,6 +102,7 @@ export default function HomeScreen({ navigation }) {
   const [riskData, setRiskData] = useState(null);
   const [riskLoading, setRiskLoading] = useState(true);
   const [currentLocation, setCurrentLocation] = useState(null);
+  const [locationUnavailable, setLocationUnavailable] = useState(false);
   const [journeyData, setJourneyData] = useState(null);
   const [recommendations, setRecommendations] = useState([]);
   const [sosTapCount, setSosTapCount] = useState(0);
@@ -157,11 +158,7 @@ export default function HomeScreen({ navigation }) {
       const { status } = await Location.requestForegroundPermissionsAsync();
       if (status !== 'granted') {
         console.log('Location permission denied');
-        // Set default Kolhapur location for testing
-        setCurrentLocation({
-          latitude: 16.7050,
-          longitude: 74.2433,
-        });
+        setLocationUnavailable(true);
         return;
       }
 
@@ -197,11 +194,7 @@ export default function HomeScreen({ navigation }) {
       return subscription;
     } catch (error) {
       console.log('Location tracking error:', error);
-      // Fallback to Kolhapur center for testing
-      setCurrentLocation({
-        latitude: 16.7050,
-        longitude: 74.2433,
-      });
+      setLocationUnavailable(true);
     }
   }, []);
 
@@ -480,9 +473,9 @@ export default function HomeScreen({ navigation }) {
               ]}
             >
               <Text style={styles.riskValue}>
-                {riskLoading ? '...' : `${riskData?.percentage || 0}%`}
+                {locationUnavailable ? '--' : riskLoading ? '...' : `${riskData?.percentage || 0}%`}
               </Text>
-              <Text style={styles.riskLabel}>{riskData?.level || 'Risk'}</Text>
+              <Text style={styles.riskLabel}>{locationUnavailable ? 'Unavailable' : riskData?.level || 'Risk'}</Text>
             </View>
 
             <View style={styles.riskDetails}>
