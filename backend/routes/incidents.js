@@ -9,6 +9,8 @@ const router = express.Router();
 
 const DB_PATH = path.join(__dirname, '..', 'data', 'incidents.json');
 
+let writeLock = Promise.resolve();
+
 const readDb = () => {
   try {
     if (!fs.existsSync(DB_PATH)) {
@@ -30,7 +32,23 @@ const writeDb = (db) => {
     fs.mkdirSync(dir, { recursive: true });
   }
   const tmpPath = `${DB_PATH}.tmp`;
-  fs.writeFileSync(tmpPath, JSON.stringify(db, null, 2), 'utf8');
+  const data = JSON.stringify(db, null, 2);
+  writeLock = writeLock.then(() => {
+    fs.writeFileSync(tmpPath, data, 'utf8');
+    fs.renameSync(tmpPath, DB_PATH);
+  });
+  return writeLock;
+};
+
+const writeDbAsync = async (db) => {
+  const dir = path.dirname(DB_PATH);
+  if (!fs.existsSync(dir)) {
+    fs.mkdirSync(dir, { recursive: true });
+  }
+  const tmpPath = `${DB_PATH}.tmp`;
+  const data = JSON.stringify(db, null, 2);
+  await writeLock;
+  fs.writeFileSync(tmpPath, data, 'utf8');
   fs.renameSync(tmpPath, DB_PATH);
 };
 
@@ -45,7 +63,7 @@ router.use(verifyToken);
  * Creates a mocked incident report record for the authenticated user.
  * Body (optional): { location: { lat, lng }, riskScore }
  */
-router.post('/mock', (req, res) => {
+router.post('/mock', async (req, res) => {
   const db = readDb();
   const now = new Date().toISOString();
 
@@ -67,7 +85,11 @@ router.post('/mock', (req, res) => {
   };
 
   db.incidents.push(incident);
-  writeDb(db);
+  try {
+    await writeDbAsync(db);
+  } catch (error) {
+    return res.status(500).json({ success: false, error: 'Failed to save incident.' });
+  }
 
   res.status(201).json({ success: true, data: incident });
 });
@@ -124,7 +146,12 @@ router.get('/:incidentId/videos', (req, res) => {
  * Adds a video evidence URL to an incident (must belong to user).
  * Body: { url, label }
  */
-router.post('/:incidentId/videos', (req, res) => {
+router.post('/:incidentId/videos', async (req, res) => {
+  const { incidentId } = req.params;
+  if (!incidentId || incidentId.length > INCIDENT_ID_MAX_LENGTH || !UUID_RE.test(incidentId)) {
+    return res.status(400).json({ success: false, error: 'Invalid incident ID.' });
+  }
+
   const { url, label } = req.body || {};
   if (!url) {
     return res.status(400).json({ success: false, error: 'Video url is required.' });
@@ -147,7 +174,11 @@ router.post('/:incidentId/videos', (req, res) => {
   incident.videoEvidence = Array.isArray(incident.videoEvidence) ? incident.videoEvidence : [];
   incident.videoEvidence.unshift(evidence);
 
-  writeDb(db);
+  try {
+    await writeDbAsync(db);
+  } catch (error) {
+    return res.status(500).json({ success: false, error: 'Failed to save evidence.' });
+  }
   res.status(201).json({ success: true, data: evidence });
 });
 
