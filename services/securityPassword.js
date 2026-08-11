@@ -3,8 +3,6 @@ import authAPI from './api';
 
 const SECURITY_PASSWORD_MAP_KEY = '@abhaya_security_password_map_v2';
 
-export const DEFAULT_SECURITY_PASSWORD = '12345678';
-
 export const SECURITY_PASSWORD_DESCRIPTION =
   'This extra in-app safety password is required at login and before submitting a route deviation reason. You can update it anytime from Settings.';
 
@@ -47,10 +45,10 @@ export const cacheSecurityPassword = async ({ email, safetyPassword }) => {
   await writePasswordMap(existing);
 };
 
-export const getSecurityPassword = async (email) => {
+export const hasSecurityPassword = async (email) => {
   const normalizedEmail = await resolveEmail(email);
   const existing = await readPasswordMap();
-  return existing[normalizedEmail] || DEFAULT_SECURITY_PASSWORD;
+  return Boolean(existing[normalizedEmail]);
 };
 
 export const verifySecurityPassword = async ({ email, input }) => {
@@ -61,21 +59,16 @@ export const verifySecurityPassword = async ({ email, input }) => {
     return false;
   }
 
-  if (normalizedEmail) {
-    const remoteResult = await authAPI.verifySafetyPassword(normalizedEmail, normalizedInput);
-    if (remoteResult?.success) {
-      if (remoteResult.data?.valid) {
-        await cacheSecurityPassword({
-          email: normalizedEmail,
-          safetyPassword: normalizedInput,
-        });
-      }
-      return Boolean(remoteResult.data?.valid);
-    }
+  if (!normalizedEmail) {
+    return false;
   }
 
-  const expected = await getSecurityPassword(normalizedEmail);
-  return normalizedInput === expected;
+  const remoteResult = await authAPI.verifySafetyPassword(normalizedEmail, normalizedInput);
+  if (remoteResult?.success) {
+    return Boolean(remoteResult.data?.valid);
+  }
+
+  return false;
 };
 
 export const updateSecurityPassword = async ({ email, nextPassword }) => {

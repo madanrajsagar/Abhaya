@@ -17,9 +17,8 @@ import { useFocusEffect } from '@react-navigation/native';
 import { useAuth } from '../context/AuthContext';
 import authAPI from '../services/api';
 import {
-  DEFAULT_SECURITY_PASSWORD,
   SECURITY_PASSWORD_DESCRIPTION,
-  getSecurityPassword,
+  hasSecurityPassword,
   updateSecurityPassword,
   verifySecurityPassword,
 } from '../services/securityPassword';
@@ -58,11 +57,11 @@ export default function SettingsScreen({ navigation }) {
 
   useEffect(() => {
     const loadSecurityStatus = async () => {
-      const current = await getSecurityPassword(user?.email);
-      if (current === DEFAULT_SECURITY_PASSWORD) {
-        setSecurityStatus('Tap to manage your safety password');
-      } else {
+      const hasCustom = await hasSecurityPassword(user?.email);
+      if (hasCustom) {
         setSecurityStatus('Custom safety password configured');
+      } else {
+        setSecurityStatus('Tap to manage your safety password');
       }
     };
 
