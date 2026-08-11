@@ -98,7 +98,6 @@ const storeAuthData = async (data) => {
         email: data.email,
         displayName: data.displayName,
         photoURL: data.photoURL || '',
-        hasSafetyPassword: data.hasSafetyPassword,
       }),
     ],
   ]);
@@ -263,8 +262,7 @@ const authAPI = {
 const getCloudinaryUploadConfig = () => {
   const uploadUrl =
     process.env.EXPO_PUBLIC_CLOUDINARY_UPLOAD_URL || process.env.CLOUDINARY_UPLOAD_URL;
-  const uploadPreset =
-    process.env.EXPO_PUBLIC_CLOUDINARY_UPLOAD_PRESET || process.env.CLOUDINARY_UPLOAD_PRESET;
+  const uploadPreset = process.env.EXPO_PUBLIC_CLOUDINARY_UPLOAD_PRESET;
 
   return {
     uploadUrl: uploadUrl ? String(uploadUrl).trim() : '',
