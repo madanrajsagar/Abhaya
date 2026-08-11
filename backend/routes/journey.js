@@ -20,8 +20,21 @@ const DEVIATION_THRESHOLD_METRES = Number(
 );
 const ROUTE_RADIUS_ATTEMPTS_METRES = [null, 1000, 2500, 5000];
 const FAST_ROUTE_RADIUS_ATTEMPTS_METRES = [null, 1000];
+const CACHE_MAX_ENTRIES = Number(process.env.CACHE_MAX_ENTRIES || 200);
+
 const recentRouteCache = new Map();
 const recentGeocodeCache = new Map();
+
+const evictOldestEntries = (cache) => {
+  if (cache.size <= CACHE_MAX_ENTRIES) return;
+  const entriesToDelete = cache.size - CACHE_MAX_ENTRIES;
+  let count = 0;
+  for (const key of cache.keys()) {
+    if (count >= entriesToDelete) break;
+    cache.delete(key);
+    count++;
+  }
+};
 
 const createTimeoutError = () => {
   const error = new Error('Journey provider request timed out.');
@@ -168,6 +181,7 @@ const setCachedRoute = (cacheKey, data) => {
     data,
     cachedAt: Date.now(),
   });
+  evictOldestEntries(recentRouteCache);
 };
 
 const getGeocodeCacheKey = (query) => String(query || '').trim().toLowerCase();
@@ -191,6 +205,7 @@ const setCachedGeocode = (cacheKey, data) => {
     data,
     cachedAt: Date.now(),
   });
+  evictOldestEntries(recentGeocodeCache);
 };
 
 const buildFallbackRoute = ({ originLat, originLng, destLat, destLng, mode = 'vehicle' }) => {
