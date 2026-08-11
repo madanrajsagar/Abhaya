@@ -10,7 +10,6 @@ if (!loadedEnvPath) {
   console.warn('backend/.env not found. Copy backend/.env.example -> backend/.env and restart the server.');
 }
 
-console.log(`FIREBASE_API_KEY ${getEnvValue('FIREBASE_API_KEY') ? 'loaded' : 'missing'}`);
 
 const app = express();
 const PORT = process.env.PORT || 5000;

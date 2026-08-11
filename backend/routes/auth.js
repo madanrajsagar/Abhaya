@@ -194,10 +194,10 @@ router.post('/signup', async (req, res) => {
 
   try {
     const { data: signUpData } = await firebaseJson(
-      `${IDENTITY_URL}:signUp?key=${apiKey}`,
+      `${IDENTITY_URL}:signUp`,
       {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', 'x-goog-api-key': apiKey },
         body: JSON.stringify({
           email,
           password,
@@ -304,10 +304,10 @@ router.post('/signup', async (req, res) => {
         });
       } else {
         await firebaseJson(
-          `${IDENTITY_URL}:update?key=${apiKey}`,
+          `${IDENTITY_URL}:update`,
           {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 'Content-Type': 'application/json', 'x-goog-api-key': apiKey },
             body: JSON.stringify({
               idToken: signUpData.idToken,
               displayName,
@@ -360,10 +360,10 @@ router.post('/login', async (req, res) => {
 
   try {
     const { data } = await firebaseJson(
-      `${IDENTITY_URL}:signInWithPassword?key=${apiKey}`,
+      `${IDENTITY_URL}:signInWithPassword`,
       {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', 'x-goog-api-key': apiKey },
         body: JSON.stringify({
           email,
           password,
@@ -490,7 +490,7 @@ router.post('/refresh', async (req, res) => {
       `${TOKEN_URL}?key=${apiKey}`,
       {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', 'x-goog-api-key': apiKey },
         body: JSON.stringify({
           grant_type: 'refresh_token',
           refresh_token: refreshToken,
@@ -574,10 +574,10 @@ router.get('/profile', verifyToken, async (req, res) => {
 
     const idToken = req.headers.authorization.split('Bearer ')[1];
     const { data } = await firebaseJson(
-      `${IDENTITY_URL}:lookup?key=${apiKey}`,
+      `${IDENTITY_URL}:lookup`,
       {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', 'x-goog-api-key': apiKey },
         body: JSON.stringify({ idToken }),
       },
       'profileLookup'
@@ -682,10 +682,10 @@ router.put('/profile', verifyToken, async (req, res) => {
     if (photoURL !== undefined) updateData.photoUrl = photoURL;
 
     const { data } = await firebaseJson(
-      `${IDENTITY_URL}:update?key=${apiKey}`,
+      `${IDENTITY_URL}:update`,
       {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', 'x-goog-api-key': apiKey },
         body: JSON.stringify(updateData),
       },
       'profileUpdate'
@@ -745,10 +745,10 @@ router.delete('/account', verifyToken, async (req, res) => {
 
     const idToken = req.headers.authorization.split('Bearer ')[1];
     const { data } = await firebaseJson(
-      `${IDENTITY_URL}:delete?key=${apiKey}`,
+      `${IDENTITY_URL}:delete`,
       {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', 'x-goog-api-key': apiKey },
         body: JSON.stringify({ idToken }),
       },
       'accountDelete'
