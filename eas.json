@@ -1,0 +1,45 @@
+{
+  "cli": {
+    "version": ">= 18.8.1",
+    "appVersionSource": "remote"
+  },
+  "build": {
+    "development": {
+      "developmentClient": true,
+      "distribution": "internal",
+      "env": {
+        "EXPO_PUBLIC_API_BASE_URL": "https://abhaya-y6dw.onrender.com/api",
+        "EXPO_PUBLIC_API_URL": "https://abhaya-y6dw.onrender.com/api",
+        "EXPO_PUBLIC_BACKEND_API_URL": "https://abhaya-y6dw.onrender.com/api",
+        "EXPO_PUBLIC_BACKEND_URL": "https://abhaya-y6dw.onrender.com/api",
+        "EXPO_PUBLIC_CLOUDINARY_UPLOAD_URL": "https://api.cloudinary.com/v1_1/djhoiggsv/video/upload",
+        "EXPO_PUBLIC_CLOUDINARY_UPLOAD_PRESET": "abhaya_upload"
+      }
+    },
+    "preview": {
+      "distribution": "internal",
+      "env": {
+        "EXPO_PUBLIC_API_BASE_URL": "https://abhaya-y6dw.onrender.com/api",
+        "EXPO_PUBLIC_API_URL": "https://abhaya-y6dw.onrender.com/api",
+        "EXPO_PUBLIC_BACKEND_API_URL": "https://abhaya-y6dw.onrender.com/api",
+        "EXPO_PUBLIC_BACKEND_URL": "https://abhaya-y6dw.onrender.com/api",
+        "EXPO_PUBLIC_CLOUDINARY_UPLOAD_URL": "https://api.cloudinary.com/v1_1/djhoiggsv/video/upload",
+        "EXPO_PUBLIC_CLOUDINARY_UPLOAD_PRESET": "abhaya_upload"
+      }
+    },
+    "production": {
+      "autoIncrement": true,
+      "env": {
+        "EXPO_PUBLIC_API_BASE_URL": "https://abhaya-y6dw.onrender.com/api",
+        "EXPO_PUBLIC_API_URL": "https://abhaya-y6dw.onrender.com/api",
+        "EXPO_PUBLIC_BACKEND_API_URL": "https://abhaya-y6dw.onrender.com/api",
+        "EXPO_PUBLIC_BACKEND_URL": "https://abhaya-y6dw.onrender.com/api",
+        "EXPO_PUBLIC_CLOUDINARY_UPLOAD_URL": "https://api.cloudinary.com/v1_1/djhoiggsv/video/upload",
+        "EXPO_PUBLIC_CLOUDINARY_UPLOAD_PRESET": "abhaya_upload"
+      }
+    }
+  },
+  "submit": {
+    "production": {}
+  }
+}

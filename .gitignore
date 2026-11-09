@@ -1,0 +1,124 @@
+# Learn more:
+# https://docs.github.com/en/get-started/getting-started-with-git/ignoring-files
+
+# =========================
+# Dependencies
+# =========================
+node_modules/
+backend/node_modules/
+
+# =========================
+# Environment / secrets
+# =========================
+.env
+.env.*
+.env*.local
+*.env
+.envrc
+.envrc.local
+
+backend/.env
+backend/.env.*
+backend/.env*.local
+
+# Keep example env files
+!.env.example
+!backend/.env.example
+
+# Firebase / service keys / private keys
+serviceAccountKey.json
+backend/serviceAccountKey.json
+**/serviceAccountKey.json
+backend/config/serviceAccountKey.json
+**/*serviceAccount*.json
+**/*firebase-adminsdk*.json
+google-services.json
+android/app/google-services.json
+ios/GoogleService-Info.plist
+*.pem
+*.key
+*.jks
+*.p8
+*.p12
+*.mobileprovision
+
+# =========================
+# Expo / React Native
+# =========================
+.expo/
+.expo-shared/
+expo-env.d.ts
+web-build/
+dist/
+
+# Generated native folders
+/ios/
+/android/
+
+# =========================
+# Metro / React Native cache
+# =========================
+.metro-health-check*
+.metro-cache/
+.watchmanconfig
+
+# =========================
+# Backend runtime files
+# =========================
+backend/logs/
+backend/uploads/
+backend/tmp/
+backend/temp/
+backend/coverage/
+backend/.cache/
+
+# =========================
+# Logs / debug
+# =========================
+*.log
+*.pid
+*.pid.lock
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# =========================
+# OS files
+# =========================
+.DS_Store
+Thumbs.db
+
+# =========================
+# IDE / editor
+# =========================
+.vscode/
+.idea/
+
+# =========================
+# Build / cache
+# =========================
+.npm-cache/
+backend/.npm-cache/
+.cache/
+coverage/
+.eslintcache
+*.tmp
+*.temp
+
+# =========================
+# Local reference assets
+# =========================
+ffdemo/
+
+# =========================
+# TypeScript
+# =========================
+*.tsbuildinfo
+
+# =========================
+# Git conflict backup files
+# =========================
+*.orig
+*.orig.*
+backend/data/incidents.json

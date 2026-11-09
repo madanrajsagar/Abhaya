@@ -1,0 +1,65 @@
+{
+  "expo": {
+    "name": "womenSafetyAppJS",
+    "slug": "womenSafetyAppJS",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "newArchEnabled": true,
+    "splash": {
+      "image": "./assets/splash-icon.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "ios": {
+      "supportsTablet": true,
+      "infoPlist": {
+        "NSLocationWhenInUseUsageDescription": "Abhaya uses your location to plan safe journeys and detect route deviations.",
+        "NSCameraUsageDescription": "Abhaya uses the camera to scan suspicious vehicles and record emergency evidence.",
+        "NSPhotoLibraryUsageDescription": "Abhaya uses your photo library so you can upload vehicle images and save them as evidence.",
+        "NSMicrophoneUsageDescription": "Abhaya uses the microphone to monitor emergency audio during safety alerts and record emergency evidence with audio."
+      }
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#ffffff"
+      },
+      "edgeToEdgeEnabled": true,
+      "usesCleartextTraffic": true,
+      "permissions": [
+        "android.permission.ACCESS_COARSE_LOCATION",
+        "android.permission.ACCESS_FINE_LOCATION",
+        "android.permission.CAMERA",
+        "android.permission.RECORD_AUDIO"
+      ],
+      "package": "com.harshad290507.womenSafetyAppJS"
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "plugins": [
+      [
+        "expo-location",
+        {
+          "locationWhenInUsePermission": "Abhaya uses your location to plan safe journeys and detect route deviations."
+        }
+      ],
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Abhaya uses your photo library so you can upload vehicle images and save them as evidence.",
+          "cameraPermission": "Abhaya uses the camera to scan suspicious vehicles and record emergency evidence."
+        }
+      ],
+      "expo-video"
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "2ceb6b4b-0123-4526-8f2d-d8c977c5134a"
+      }
+    },
+    "owner": "madanrajsagar"
+  }
+}

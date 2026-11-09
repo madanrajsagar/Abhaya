@@ -1,0 +1,202 @@
+[
+  {
+    "id": 1,
+    "name": "Kolhapur Railway Station Area",
+    "latitude": 16.6947,
+    "longitude": 74.2108,
+    "risk": "high",
+    "radius": 500,
+    "crime_types": ["theft", "kidnapping", "harassment"],
+    "description": "Busy transit hub with reported cases of chain snatching, harassment of women, and suspicious activity near late-night trains."
+  },
+  {
+    "id": 2,
+    "name": "Central Bus Stand (MSRTC)",
+    "latitude": 16.7040,
+    "longitude": 74.2270,
+    "risk": "high",
+    "radius": 450,
+    "crime_types": ["harassment", "theft", "assault"],
+    "description": "High footfall area with reported incidents of eve-teasing, pickpocketing, and harassment especially during late hours."
+  },
+  {
+    "id": 3,
+    "name": "Rankala Lake Surroundings",
+    "latitude": 16.6880,
+    "longitude": 74.2140,
+    "risk": "high",
+    "radius": 600,
+    "crime_types": ["assault", "rape", "kidnapping"],
+    "description": "Isolated zones near the lake have recorded serious crimes at night including assault and kidnapping incidents."
+  },
+  {
+    "id": 4,
+    "name": "Shivaji Peth",
+    "latitude": 16.7050,
+    "longitude": 74.2433,
+    "risk": "high",
+    "radius": 500,
+    "crime_types": ["theft", "harassment", "murder"],
+    "description": "Dense commercial locality with history of violent crimes, chain snatching, and street harassment reported near market lanes."
+  },
+  {
+    "id": 5,
+    "name": "Mangalwar Peth",
+    "latitude": 16.7000,
+    "longitude": 74.2480,
+    "risk": "high",
+    "radius": 400,
+    "crime_types": ["assault", "harassment", "theft"],
+    "description": "Congested old city area with narrow lanes, reported for harassment, assault cases, and theft incidents."
+  },
+  {
+    "id": 6,
+    "name": "Tarabai Park Area",
+    "latitude": 16.7150,
+    "longitude": 74.2200,
+    "risk": "medium",
+    "radius": 350,
+    "crime_types": ["harassment", "theft"],
+    "description": "Park area with reported incidents of eve-teasing and theft, especially in secluded zones after evening hours."
+  },
+  {
+    "id": 7,
+    "name": "Gandhinagar",
+    "latitude": 16.7080,
+    "longitude": 74.2180,
+    "risk": "medium",
+    "radius": 350,
+    "crime_types": ["theft", "harassment"],
+    "description": "Residential-commercial mix area with moderate crime rate, including petty theft and reported harassment cases."
+  },
+  {
+    "id": 8,
+    "name": "Subhash Nagar",
+    "latitude": 16.7200,
+    "longitude": 74.2350,
+    "risk": "medium",
+    "radius": 400,
+    "crime_types": ["assault", "kidnapping", "theft"],
+    "description": "Suburban locality with some reported kidnapping and assault cases, considered unsafe during late-night hours."
+  },
+  {
+    "id": 9,
+    "name": "Kasba Bawda",
+    "latitude": 16.7220,
+    "longitude": 74.2500,
+    "risk": "medium",
+    "radius": 380,
+    "crime_types": ["harassment", "assault"],
+    "description": "Industrial and residential belt with moderate safety concerns, reported harassment and isolated assault cases."
+  },
+  {
+    "id": 10,
+    "name": "Shahupuri",
+    "latitude": 16.7100,
+    "longitude": 74.2300,
+    "risk": "medium",
+    "radius": 370,
+    "crime_types": ["theft", "harassment"],
+    "description": "Commercial hub with chain-snatching incidents and eve-teasing reported in crowded market zones."
+  },
+  {
+    "id": 11,
+    "name": "Rajarampuri",
+    "latitude": 16.6980,
+    "longitude": 74.2380,
+    "risk": "medium",
+    "radius": 350,
+    "crime_types": ["harassment", "theft"],
+    "description": "Known residential area with moderate incidents of theft and harassment especially near isolated lanes."
+  },
+  {
+    "id": 12,
+    "name": "Kalamba Area",
+    "latitude": 16.6800,
+    "longitude": 74.2500,
+    "risk": "high",
+    "radius": 480,
+    "crime_types": ["rape", "assault", "kidnapping"],
+    "description": "Outer city area with serious crime history including rape and kidnapping cases near isolated roads and outskirts."
+  },
+  {
+    "id": 13,
+    "name": "Ruikar Colony",
+    "latitude": 16.7100,
+    "longitude": 74.2450,
+    "risk": "medium",
+    "radius": 330,
+    "crime_types": ["theft", "harassment"],
+    "description": "Residential colony with reported chain-snatching, petty theft, and occasional late-night harassment."
+  },
+  {
+    "id": 14,
+    "name": "Laxmipuri",
+    "latitude": 16.7060,
+    "longitude": 74.2360,
+    "risk": "low",
+    "radius": 250,
+    "crime_types": ["theft", "harassment"],
+    "description": "Relatively safer area but with isolated reports of theft and street harassment near busy intersections."
+  },
+  {
+    "id": 15,
+    "name": "Mahadwar Road",
+    "latitude": 16.7020,
+    "longitude": 74.2350,
+    "risk": "medium",
+    "radius": 360,
+    "crime_types": ["theft", "assault", "harassment"],
+    "description": "Main road with high pedestrian traffic, reported for harassment and theft incidents, particularly during festivals and crowded hours."
+  },
+  {
+    "id": 16,
+    "name": "Padmaraje Road Area",
+    "latitude": 16.7010,
+    "longitude": 74.2290,
+    "risk": "low",
+    "radius": 250,
+    "crime_types": ["harassment", "theft"],
+    "description": "Moderate safety zone, some harassment incidents reported near college zones and bus stops."
+  },
+  {
+    "id": 17,
+    "name": "Jayanti Nagar",
+    "latitude": 16.7250,
+    "longitude": 74.2280,
+    "risk": "medium",
+    "radius": 340,
+    "crime_types": ["assault", "kidnapping"],
+    "description": "Outer residential locality with reported kidnapping and assault cases, especially in poorly-lit lanes at night."
+  },
+  {
+    "id": 18,
+    "name": "Udyam Nagar",
+    "latitude": 16.6850,
+    "longitude": 74.2600,
+    "risk": "high",
+    "radius": 460,
+    "crime_types": ["murder", "assault", "rape"],
+    "description": "Industrial zone outskirts with serious crime records including murder and rape cases in isolated areas."
+  },
+  {
+    "id": 19,
+    "name": "New Shahupuri",
+    "latitude": 16.7120,
+    "longitude": 74.2250,
+    "risk": "low",
+    "radius": 220,
+    "crime_types": ["theft", "harassment"],
+    "description": "Planned residential zone, relatively safer but occasional harassment and snatching near market areas."
+  },
+  {
+    "id": 20,
+    "name": "Nagala Park Area",
+    "latitude": 16.6920,
+    "longitude": 74.2330,
+    "risk": "medium",
+    "radius": 360,
+    "crime_types": ["assault", "harassment", "kidnapping"],
+    "description": "Area near water body with reported assault and harassment incidents, unsafe for women travelling alone at night."
+  }
+]
